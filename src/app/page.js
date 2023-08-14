@@ -1,7 +1,11 @@
+'use client';
+// component
+import Navbar from '@/components/organism/Navbar';
+
 export default function Home() {
     return (
         <>
-            <h1>Hello World</h1>
+            <Navbar />
         </>
     );
 }

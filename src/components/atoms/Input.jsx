@@ -6,11 +6,11 @@ const Input = ({
     className = 'bg-neutral-6  border-net-2 px-6 py-[17px] text-body-2 font-normal focus:border-primary-1 ',
     type = 'text',
     placeholder = 'Your placeholder',
-    ...rest
+    ...props
 }) => {
     return (
         <input
-            {...rest}
+            {...props}
             id={id}
             type={type}
             placeholder={placeholder}

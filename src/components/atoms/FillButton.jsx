@@ -1,11 +1,11 @@
 //core
 import PropTypes from 'prop-types';
 
-const FillButton = ({ className = 'py-[20px] px-[130px]', children, ...rest }) => {
+const FillButton = ({ className = 'py-[20px] px-[130px]', children, ...props }) => {
     return (
         <button
-            {...rest}
-            className={`${className} bg-primary-1 text-neutral-5 border-primary-1 cursor-pointer appearance-none rounded-rad-5 font-monsterrat font-bold outline-none`}>
+            {...props}
+            className={`${className} cursor-pointer appearance-none rounded-rad-5 border-primary-1 bg-primary-1 font-monsterrat font-bold text-neutral-5 outline-none`}>
             {children}
         </button>
     );

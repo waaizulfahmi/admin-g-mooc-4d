@@ -1,9 +1,9 @@
 //core
 import PropTypes from 'prop-types';
 
-const Label = ({ className = 'mb-1 text-body-3 font-normal', htmlFor, children, ...rest }) => {
+const Label = ({ className = 'mb-1 text-body-3 font-normal', htmlFor, children, ...props }) => {
     return (
-        <label {...rest} htmlFor={htmlFor} className={`${className} font-monsterrat`}>
+        <label {...props} htmlFor={htmlFor} className={`${className} font-monsterrat`}>
             {children}
         </label>
     );

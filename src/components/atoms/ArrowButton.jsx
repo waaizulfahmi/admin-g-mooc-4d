@@ -25,11 +25,11 @@ IconButton.propTypes = {
     height: PropTypes.number,
 };
 
-const ArrowButton = ({ directionIcon, widthIcon, heightIcon, className = 'p-[10px]', ...rest }) => {
+const ArrowButton = ({ directionIcon, widthIcon, heightIcon, className = 'p-[10px]', ...props }) => {
     return (
         <button
-            {...rest}
-            className={`${className} bg-neutral-5 drop-shadow-high cursor-pointer appearance-none rounded-full font-monsterrat`}>
+            {...props}
+            className={`${className} cursor-pointer appearance-none rounded-full bg-neutral-5 font-monsterrat drop-shadow-high`}>
             <IconButton direction={directionIcon} width={widthIcon} height={heightIcon} />
         </button>
     );

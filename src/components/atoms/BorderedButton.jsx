@@ -1,7 +1,7 @@
 //core
 import PropTypes from 'prop-types';
 
-const BorderedButton = ({ theme = 'light', className = 'py-[20px] px-[130px]', children, ...rest }) => {
+const BorderedButton = ({ theme = 'light', className = 'py-[20px] px-[130px]', children, ...props }) => {
     const borderTheme = {
         light: 'bg-none border-neutral-5 text-neutral-5',
         dark: 'text-primary-1 border-primary-1 bg-neutral-5',
@@ -9,7 +9,7 @@ const BorderedButton = ({ theme = 'light', className = 'py-[20px] px-[130px]', c
 
     return (
         <button
-            {...rest}
+            {...props}
             className={`${className} ${borderTheme[theme]} cursor-pointer appearance-none rounded-rad-5 border-2 font-monsterrat font-bold outline-none`}>
             {children}
         </button>

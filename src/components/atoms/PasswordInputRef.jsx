@@ -12,7 +12,7 @@ const PasswordInputRef = forwardRef(function PasswordInputRef(
         id,
         placeholder = 'Your placeholder',
         className = 'bg-neutral-6  border-net-2 px-6 py-[17px] text-body-2 font-normal focus:border-primary-1 ',
-        ...rest
+        ...props
     },
     ref,
 ) {
@@ -22,7 +22,7 @@ const PasswordInputRef = forwardRef(function PasswordInputRef(
     return (
         <div className='relative w-full'>
             <input
-                {...rest}
+                {...props}
                 ref={ref}
                 id={id}
                 placeholder={placeholder}
@@ -32,12 +32,12 @@ const PasswordInputRef = forwardRef(function PasswordInputRef(
             {showPassword ? (
                 <FiEye
                     onClick={togglePassword}
-                    className='text-primary-1 absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer'
+                    className='absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer text-primary-1'
                 />
             ) : (
                 <FiEyeOff
                     onClick={togglePassword}
-                    className='text-neutral-3 absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer'
+                    className='absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer text-neutral-3'
                 />
             )}
         </div>
