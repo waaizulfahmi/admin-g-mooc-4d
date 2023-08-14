@@ -1,3 +1,4 @@
+//core
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

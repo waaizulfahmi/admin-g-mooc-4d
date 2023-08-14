@@ -19,18 +19,20 @@ const IconButton = ({ direction = 'left', width = 20, height = 20 }) => {
     }
 };
 
-const ArrowButton = ({ directionIcon, widthIcon, heightIcon, className = 'p-[10px]', ...rest }) => {
-    return (
-        <button {...rest} className={`${className} bg-neutral-5 drop-shadow-high cursor-pointer appearance-none rounded-full`}>
-            <IconButton direction={directionIcon} width={widthIcon} height={heightIcon} />
-        </button>
-    );
-};
-
 IconButton.propTypes = {
     direction: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
+};
+
+const ArrowButton = ({ directionIcon, widthIcon, heightIcon, className = 'p-[10px]', ...rest }) => {
+    return (
+        <button
+            {...rest}
+            className={`${className} bg-neutral-5 drop-shadow-high cursor-pointer appearance-none rounded-full font-monsterrat`}>
+            <IconButton direction={directionIcon} width={widthIcon} height={heightIcon} />
+        </button>
+    );
 };
 
 ArrowButton.propTypes = {

@@ -10,7 +10,7 @@ const BorderedButton = ({ theme = 'light', className = 'py-[20px] px-[130px]', c
     return (
         <button
             {...rest}
-            className={`${className} ${borderTheme[theme]} cursor-pointer appearance-none rounded-rad-5 border-2 font-bold outline-none`}>
+            className={`${className} ${borderTheme[theme]} cursor-pointer appearance-none rounded-rad-5 border-2 font-monsterrat font-bold outline-none`}>
             {children}
         </button>
     );

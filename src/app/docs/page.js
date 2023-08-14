@@ -7,6 +7,9 @@ import FillButton from '@/components/atoms/FillButton';
 import HeroIcon from '@/components/atoms/HeroIcon';
 import Links from '@/components/atoms/Links';
 import MicButton from '@/components/atoms/MicButton';
+import InputRef from '@/components/atoms/InputRef';
+// import PasswordInput from '@/components/atoms/PasswordInput';
+import PasswordInputRef from '@/components/atoms/PasswordInputRef';
 
 const Docs = () => {
     const navLink = [
@@ -25,7 +28,7 @@ const Docs = () => {
     ];
 
     return (
-        <div className='bg-secondary-1 flex h-screen w-screen flex-col items-center justify-center gap-10 '>
+        <div className='bg-neutral-3 flex h-screen w-screen flex-col items-center justify-center gap-10 '>
             <div className='flex flex-col items-center justify-center rounded-rad-5 bg-white p-5 shadow-high'>
                 <h1 className='pb-3 font-bold'>Arrow Button</h1>
                 <div className='flex gap-10 '>
@@ -59,8 +62,21 @@ const Docs = () => {
 
             <div>
                 <Links links={navLink} />
+            </div>
+
+            <div>
                 <MicButton />
             </div>
+
+            <div className='w-[646px]'>
+                <InputRef />
+            </div>
+
+            <div className='w-[646px]'>
+                <PasswordInputRef />
+            </div>
+
+            <div className='mb-[100px]'></div>
         </div>
     );
 };
