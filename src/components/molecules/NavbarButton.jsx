@@ -7,10 +7,10 @@ import FillButton from '../atoms/FillButton';
 const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btnFillText = 'Daftar' }) => {
     return (
         <div className={`${className} flex`}>
-            <BorderedButton className='px-[36px] py-[14px]' theme='dark'>
+            <BorderedButton className='px-[36px] py-[12px]' theme='dark'>
                 {btnBorderedText}
             </BorderedButton>
-            <FillButton className='px-[36px] py-[14px]'>{btnFillText}</FillButton>
+            <FillButton className='px-[36px] py-[12px]'>{btnFillText}</FillButton>
         </div>
     );
 };

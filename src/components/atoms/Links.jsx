@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const Links = ({ className = 'flex gap-5', links }) => {
+const Links = ({ className = 'flex gap-[40px]', links }) => {
     const path = usePathname();
 
     return (
@@ -22,7 +22,7 @@ const Links = ({ className = 'flex gap-5', links }) => {
                                 {link?.name}
                             </Link>
                             {link?.href?.toLowerCase() === path && (
-                                <div className='bg-secondary-1 absolute left-1/2 h-[10px] w-[10px] translate-x-[-50%] rounded-full'></div>
+                                <div className='absolute left-1/2 h-[10px] w-[10px] translate-x-[-50%] rounded-full bg-secondary-1'></div>
                             )}
                         </li>
                     );

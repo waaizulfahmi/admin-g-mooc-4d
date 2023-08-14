@@ -34,7 +34,7 @@ const Navbar = ({ className }) => {
     return (
         <nav
             className={`${isScrolled ? 'shadow-low' : 'shadow-none'} ${className} fixed top-0 z-20 w-screen bg-white py-[36px] `}>
-            <div className='mx-auto flex max-w-screen-lg items-center justify-between  py-3'>
+            <div className='mx-auto flex max-w-screen-xl items-center justify-between  py-3'>
                 <HeroIcon alt='icons' imgUrl='/images/voice-icon.svg' height={100} width={100} />
                 <Links links={navUrlPath} />
                 <NavbarButton />

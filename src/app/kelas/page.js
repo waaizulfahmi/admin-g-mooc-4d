@@ -1,15 +1,14 @@
 'use client';
 
-// component
+// components
 import Navbar from '@/components/organism/Navbar';
-import Hero from '@/components/organism/Hero';
 
-export default function Home() {
+const Kelas = () => {
     return (
         <>
             <Navbar />
-
-            <Hero />
         </>
     );
-}
+};
+
+export default Kelas;
