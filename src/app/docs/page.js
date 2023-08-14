@@ -5,8 +5,25 @@ import BorderedButton from '@/components/atoms/BorderedButton';
 import ArrowButton from '@/components/atoms/ArrowButton';
 import FillButton from '@/components/atoms/FillButton';
 import HeroIcon from '@/components/atoms/HeroIcon';
+import Links from '@/components/atoms/Links';
+import MicButton from '@/components/atoms/MicButton';
 
 const Docs = () => {
+    const navLink = [
+        {
+            href: '/docs',
+            name: 'Beranda',
+        },
+        {
+            href: '/kelas',
+            name: 'Kelas',
+        },
+        {
+            href: '/rapor',
+            name: 'Rapor',
+        },
+    ];
+
     return (
         <div className='bg-secondary-1 flex h-screen w-screen flex-col items-center justify-center gap-10 '>
             <div className='flex flex-col items-center justify-center rounded-rad-5 bg-white p-5 shadow-high'>
@@ -38,6 +55,11 @@ const Docs = () => {
 
             <div>
                 <HeroIcon alt='icons' imgUrl='/images/voice-icon.svg' height={100} width={100} />
+            </div>
+
+            <div>
+                <Links links={navLink} />
+                <MicButton />
             </div>
         </div>
     );

@@ -1,12 +1,14 @@
 'use client';
 
 // import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-const Input = () => {
-    return <div>Input</div>;
+const Input = ({ id, ...rest }) => {
+    return <input {...rest} id={id} />;
 };
 
-Input.propTypes = {};
+Input.propTypes = {
+    id: PropTypes.string,
+};
 
 export default Input;
