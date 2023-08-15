@@ -1,15 +1,18 @@
 'use client';
 
+// core
+
 // component
 import Navbar from '@/components/organism/Navbar';
 import Hero from '@/components/organism/Hero';
 
-export default function Home() {
+const Beranda = () => {
     return (
         <>
             <Navbar />
-
             <Hero />
         </>
     );
-}
+};
+
+export default Beranda;
