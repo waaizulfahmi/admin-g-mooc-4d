@@ -12,6 +12,9 @@ import NavbarButton from '../molecules/NavbarButton';
 // data
 import { navUrlPath } from '@/data/path-url';
 
+//utils
+// import { recognition } from '@/utils/speechRecognition';
+
 const Navbar = ({ className }) => {
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -33,8 +36,8 @@ const Navbar = ({ className }) => {
 
     return (
         <nav
-            className={`${isScrolled ? 'shadow-low' : 'shadow-none'} ${className} fixed top-0 z-20 w-screen bg-white py-[36px] `}>
-            <div className='mx-auto flex max-w-screen-xl items-center justify-between  py-3'>
+            className={`${isScrolled ? 'shadow-low' : 'shadow-none'} ${className} fixed top-0 z-20 w-screen bg-white py-[20px] `}>
+            <div className='mx-auto flex max-w-screen-xl items-center justify-between  '>
                 <HeroIcon alt='icons' imgUrl='/images/voice-icon.svg' height={100} width={100} />
                 <Links links={navUrlPath} />
                 <NavbarButton />
