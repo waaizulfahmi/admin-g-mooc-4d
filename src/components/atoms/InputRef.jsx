@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const InputRef = forwardRef(function InputRef(
     {
         id,
-        className = 'bg-neutral-6  border-net-2 px-6 py-[17px] text-body-2 font-normal focus:border-primary-1 ',
+        className = 'bg-neutral-6  border-neutral-6 px-6 py-[17px] text-body-2 font-normal focus:border-primary-1 ',
         type = 'text',
         placeholder = 'Your placeholder',
         ...props

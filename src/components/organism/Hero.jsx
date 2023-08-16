@@ -12,7 +12,7 @@ const Hero = ({ className }) => {
     return (
         <main style={{ height: 'calc(100vh - 150px)' }} className={`${className} mx-auto mt-[150px] max-w-screen-xl`}>
             <div className='grid grid-cols-12'>
-                <div className='col-span-6 flex  items-center justify-start '>
+                <div className='col-span-6 flex items-center justify-start '>
                     <div>
                         <h1 className='text-head-1 font-bold'>
                             <span className='text-secondary-1'>Semua</span> Berhak <br /> untuk bisa belajar
@@ -28,7 +28,7 @@ const Hero = ({ className }) => {
                 </div>
                 <div className='col-span-6 flex items-center justify-center '>
                     <div className='flex'>
-                        <Image className='pt-[120px]' alt='' src={'/images/kursi.png'} width={400} height={400} />
+                        <Image className='pt-[120px]' alt='' src={'/images/blind.svg'} width={240} height={240} />
                         <div>
                             <MicButton />
                         </div>

@@ -10,8 +10,9 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 const PasswordInputRef = forwardRef(function PasswordInputRef(
     {
         id,
+        isError = false,
         placeholder = 'Your placeholder',
-        className = 'bg-neutral-6  border-net-2 px-6 py-[17px] text-body-2 font-normal focus:border-primary-1 ',
+        className = 'bg-neutral-6  border-neutral-6 px-6 py-[17px] text-body-2 font-normal focus:border-primary-1 ',
         ...props
     },
     ref,
@@ -22,6 +23,7 @@ const PasswordInputRef = forwardRef(function PasswordInputRef(
     return (
         <div className='relative w-full'>
             <input
+                autoComplete='on'
                 {...props}
                 ref={ref}
                 id={id}
@@ -32,12 +34,16 @@ const PasswordInputRef = forwardRef(function PasswordInputRef(
             {showPassword ? (
                 <FiEye
                     onClick={togglePassword}
-                    className='absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer text-primary-1'
+                    className={`${
+                        isError ? 'text-alert-1' : 'text-primary-1'
+                    } absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer `}
                 />
             ) : (
                 <FiEyeOff
                     onClick={togglePassword}
-                    className='absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer text-neutral-3'
+                    className={`${
+                        isError ? 'text-alert-1' : 'text-neutral-3'
+                    } absolute right-1 top-[50%] mr-3 h-5 w-5 translate-y-[-50%] cursor-pointer `}
                 />
             )}
         </div>
@@ -46,6 +52,7 @@ const PasswordInputRef = forwardRef(function PasswordInputRef(
 
 PasswordInputRef.propTypes = {
     id: PropTypes.string,
+    isError: PropTypes.bool,
     className: PropTypes.string,
     type: PropTypes.string,
     placeholder: PropTypes.string,

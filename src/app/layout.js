@@ -1,6 +1,7 @@
 import './globals.css';
 import { Montserrat } from 'next/font/google';
 import PropTypes from 'prop-types';
+import NextAuthProvider from '@/components/organism/NextAuthProvider';
 
 const monsterrat = Montserrat({
     subsets: ['latin'],
@@ -17,7 +18,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang='en' className={`${monsterrat.variable}`}>
-            <body suppressHydrationWarning>{children}</body>
+            <body suppressHydrationWarning>
+                <NextAuthProvider>{children}</NextAuthProvider>
+            </body>
         </html>
     );
 }
