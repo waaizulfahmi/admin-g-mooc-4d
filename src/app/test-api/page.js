@@ -79,24 +79,24 @@ const TestApi = () => {
     // }, [token]);
 
     // FORGOT PASSWORD TEST
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const fetchApi = async () => {
-                try {
-                    const response = await forgotPasswordApi({
-                        email: 'ariefrachmanhakim1001@gmail.com',
-                        host: window?.location?.origin,
-                    });
-                    const responseMsg = response?.metadata?.message;
-                    console.log(response);
-                    console.log(responseMsg);
-                } catch (error) {
-                    console.log(error.message);
-                }
-            };
-            fetchApi();
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (typeof window !== 'undefined') {
+    //         const fetchApi = async () => {
+    //             try {
+    //                 const response = await forgotPasswordApi({
+    //                     email: 'ariefrachmanhakim1001@gmail.com',
+    //                     host: window?.location?.origin,
+    //                 });
+    //                 const responseMsg = response?.metadata?.message;
+    //                 console.log(response);
+    //                 console.log(responseMsg);
+    //             } catch (error) {
+    //                 console.log(error.message);
+    //             }
+    //         };
+    //         fetchApi();
+    //     }
+    // }, []);
 
     return <div>TestApi</div>;
 };
