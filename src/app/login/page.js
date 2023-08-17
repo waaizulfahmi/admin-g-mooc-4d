@@ -8,15 +8,21 @@ import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 
+// hooks
+import { useNotification } from '@/hooks';
+
 // component
 import BorderedButton from '@/components/atoms/BorderedButton';
 import FillButton from '@/components/atoms/FillButton';
 import InputRef from '@/components/atoms/InputRef';
 import PasswordInputRef from '@/components/atoms/PasswordInputRef';
 import Label from '@/components/atoms/Label';
+import Notification from '@/components/organism/Notification';
 
 const Login = () => {
     const router = useRouter();
+    const { notifData, handleNotifAction, handleNotifVisible } = useNotification();
+
     const {
         register,
         handleSubmit,
@@ -36,7 +42,7 @@ const Login = () => {
         if (!response?.error) {
             router.replace('/', { scroll: false });
         } else if (response?.error) {
-            console.log('ERROR: ', response.error);
+            handleNotifAction('error', response.error);
         }
     };
 
@@ -117,6 +123,13 @@ const Login = () => {
                     </form>
                 </div>
             </div>
+            <Notification
+                isVisible={notifData.isVisible}
+                time={notifData.time}
+                handleVisible={handleNotifVisible}
+                text={notifData.text}
+                type={notifData.type}
+            />
         </section>
     );
 };
