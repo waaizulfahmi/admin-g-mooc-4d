@@ -3,6 +3,7 @@
 // core
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { usePathname } from 'next/navigation';
 
 // components
 import HeroIcon from '../atoms/HeroIcon';
@@ -14,8 +15,10 @@ import { navUrlPath } from '@/data/path-url';
 
 //utils
 // import { recognition } from '@/utils/speechRecognition';
+import { colorTheme } from '@/utils/colorTheme';
 
 const Navbar = ({ className }) => {
+    const path = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
 
     const handleColorNav = () => {
@@ -36,9 +39,16 @@ const Navbar = ({ className }) => {
 
     return (
         <nav
-            className={`${isScrolled ? 'shadow-low' : 'shadow-none'} ${className} fixed top-0 z-20 w-screen bg-white py-[20px] `}>
-            <div className='mx-auto flex max-w-screen-xl items-center justify-between  '>
-                <HeroIcon alt='icons' imgUrl='/images/voice-icon.svg' height={100} width={100} />
+            className={`${colorTheme(path)} ${
+                isScrolled ? 'shadow-low' : 'shadow-none'
+            } ${className} fixed top-0 z-20 w-screen  py-[20px] `}>
+            <div className='mx-auto flex max-w-screen-xl items-center justify-between '>
+                <HeroIcon
+                    alt='icons'
+                    imgUrl={path === '/rapor' ? '/images/icon-white.svg' : '/images/voice-icon.svg'}
+                    height={100}
+                    width={100}
+                />
                 <Links links={navUrlPath} />
                 <NavbarButton />
             </div>

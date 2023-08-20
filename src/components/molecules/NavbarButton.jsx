@@ -1,4 +1,7 @@
+'use client';
+
 import PropTypes from 'prop-types';
+import { usePathname } from 'next/navigation';
 
 // third party
 import { useSession, signOut } from 'next-auth/react';
@@ -11,6 +14,7 @@ import BorderedButton from '../atoms/BorderedButton';
 import FillButton from '../atoms/FillButton';
 
 const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btnFillText = 'Daftar' }) => {
+    const path = usePathname();
     const { status, data } = useSession();
     const token = data?.user?.token;
 
@@ -30,7 +34,7 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
                     <FillButton onClick={() => signOut()} className='invisible px-[36px] py-[12px]'>
                         Keluar
                     </FillButton>
-                    <BorderedButton className='px-[36px] py-[12px]' theme='dark'>
+                    <BorderedButton className='w-[200px]  py-[12px]' theme={path === '/rapor' ? 'light' : 'dark'}>
                         Memuat Data...
                     </BorderedButton>
                 </div>
@@ -38,12 +42,28 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
         case 'authenticated':
             return (
                 <div className={`${className} flex`}>
-                    <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
-                        {btnBorderedText}
-                    </BorderedButton>
-                    <FillButton onClick={handleSignOut} className='px-[36px] py-[12px]'>
-                        Keluar
-                    </FillButton>
+                    {path === '/rapor' ? (
+                        <>
+                            <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
+                                {btnBorderedText}
+                            </BorderedButton>
+                            <BorderedButton
+                                onClick={handleSignOut}
+                                className='w-[200px] py-[12px]'
+                                theme={path === '/rapor' ? 'light' : 'dark'}>
+                                Keluar
+                            </BorderedButton>
+                        </>
+                    ) : (
+                        <>
+                            <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
+                                {btnBorderedText}
+                            </BorderedButton>
+                            <FillButton onClick={handleSignOut} className='w-[200px] py-[12px]'>
+                                Keluar
+                            </FillButton>
+                        </>
+                    )}
                 </div>
             );
         default:

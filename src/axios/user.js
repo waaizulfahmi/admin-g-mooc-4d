@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { apiInstance } from './instance';
+import { apiInstance, apiStorageInstance } from './instance';
 
 /* 
 @ROUTE : /user 
@@ -94,7 +94,7 @@ export const updateUserImage = async ({ image, token }) => {
 /* 
 @ROUTE : /user/kelas/all 
 */
-export const getAllClass = async ({ token }) => {
+export const getAllClassApi = async ({ token }) => {
     try {
         if (!token) throw new Error('Token must be submitted!');
 

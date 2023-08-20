@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const apiInstance = axios.create({
-    baseURL: 'https://nurz.site/api/',
+    baseURL: 'https://nurz.site/api',
     withCredentials: true,
 });
 

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const Links = ({ className = 'flex gap-[40px]', links }) => {
+// utils
+// import { colorTheme } from '@/utils/colorTheme';
+
+const Links = ({ className = 'flex gap-[50px]', links }) => {
     const path = usePathname();
 
     return (
@@ -15,8 +18,8 @@ const Links = ({ className = 'flex gap-[40px]', links }) => {
                             <Link
                                 className={`${
                                     link?.href?.toLowerCase() === path
-                                        ? 'text-primary-1 text-opacity-100'
-                                        : ' text-black text-opacity-50'
+                                        ? `${path === '/rapor' ? 'text-white' : 'text-primary-1 text-opacity-100'}`
+                                        : `${path === '/rapor' ? 'text-black text-opacity-80' : 'text-black text-opacity-50'}`
                                 } cursor-pointer font-bold`}
                                 href={link?.href}>
                                 {link?.name}
