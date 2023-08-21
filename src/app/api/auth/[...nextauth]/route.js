@@ -21,6 +21,7 @@ const handler = NextAuth({
                         email: credentials.email,
                         password: credentials.password,
                     });
+                    console.log(response.data);
 
                     return response.data;
                 } catch (error) {
@@ -37,7 +38,8 @@ const handler = NextAuth({
             return { ...token, ...user };
         },
 
-        async session({ session, token }) {
+        // eslint-disable-next-line no-unused-vars
+        async session({ session, token, user }) {
             session.user = token;
             return session;
         },

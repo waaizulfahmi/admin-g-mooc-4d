@@ -20,8 +20,12 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
 
     const handleSignOut = async () => {
         if (token) {
-            const response = await logoutApi({ token });
-            if (response?.metadata?.status === 'success') {
+            try {
+                const response = await logoutApi({ token });
+                if (response?.metadata?.status === 'success') {
+                    signOut();
+                }
+            } catch (_) {
                 signOut();
             }
         }
