@@ -19,15 +19,15 @@ const ResetPassword = () => {
         if (email && token) {
             const fetchApi = async () => {
                 try {
-                    console.log(email);
-                    console.log(token);
-                    const response = await resetPasswordApi({
+                    // console.log(email);
+                    // console.log(token);
+                    await resetPasswordApi({
                         email,
                         password: 'arief12345',
                         password_confirmation: 'arief12345',
                         token,
                     });
-                    console.log(response);
+                    // console.log(response);
                 } catch (error) {
                     console.log(error.message);
                 }

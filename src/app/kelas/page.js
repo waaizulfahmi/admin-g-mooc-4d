@@ -22,7 +22,7 @@ const Kelas = () => {
     const { data } = useSession();
     const router = useRouter();
     const token = data?.user?.token;
-    console.log(token);
+    // console.log(token);
 
     const handlePilihKelas = (idKelas) => {
         router.push(`/kelas/${idKelas}`);
@@ -41,7 +41,7 @@ const Kelas = () => {
         }
     }, [token]);
 
-    console.log(kelas);
+    // console.log(kelas);
 
     return (
         <>

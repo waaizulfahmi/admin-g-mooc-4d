@@ -2,6 +2,7 @@ import './globals.css';
 import { Montserrat } from 'next/font/google';
 import PropTypes from 'prop-types';
 import NextAuthProvider from '@/components/organism/NextAuthProvider';
+import ReduxProvider from '@/components/organism/ReduxProvider';
 
 const monsterrat = Montserrat({
     subsets: ['latin'],
@@ -19,7 +20,9 @@ export default function RootLayout({ children }) {
     return (
         <html lang='en' className={`${monsterrat.variable}`}>
             <body suppressHydrationWarning>
-                <NextAuthProvider>{children}</NextAuthProvider>
+                <NextAuthProvider>
+                    <ReduxProvider>{children}</ReduxProvider>
+                </NextAuthProvider>
             </body>
         </html>
     );

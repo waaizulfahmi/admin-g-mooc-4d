@@ -41,7 +41,7 @@ const handler = NextAuth({
                         },
                     );
 
-                    console.log(res.data.data);
+                    // console.log(res.data.data);
                     return res.data.data;
                 } catch (error) {
                     throw new Error(error.message);
