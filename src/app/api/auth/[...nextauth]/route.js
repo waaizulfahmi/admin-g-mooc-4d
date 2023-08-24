@@ -44,7 +44,8 @@ const handler = NextAuth({
                     // console.log(res.data.data);
                     return res.data.data;
                 } catch (error) {
-                    throw new Error(error.message);
+                    console.log('ERROR USER AUTH', error.response.data.message);
+                    throw new Error(error.response.data.message);
                 }
             },
         }),
