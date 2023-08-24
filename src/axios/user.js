@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { apiInstance, apiStorageInstance } from './instance';
+import { apiInstance } from './instance';
 
 /* 
 @ROUTE : /user 

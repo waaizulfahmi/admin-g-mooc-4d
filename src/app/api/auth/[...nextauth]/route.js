@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
-import { loginApi } from '@/axios/auth';
+// import { loginApi } from '@/axios/auth';
+import axios from 'axios';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const handler = NextAuth({
@@ -17,13 +18,31 @@ const handler = NextAuth({
 
             async authorize(credentials) {
                 try {
-                    const response = await loginApi({
-                        email: credentials.email,
-                        password: credentials.password,
-                    });
-                    console.log(response.data);
+                    // const response = await loginApi({
+                    //     email: credentials.email,
+                    //     password: credentials.password,
+                    // });
+                    // console.log(response.data);
 
-                    return response.data;
+                    // return response.data;
+
+                    const res = await axios.post(
+                        'https://nurz.site/api/login',
+                        {
+                            email: credentials.email,
+                            password: credentials.password,
+                        },
+                        {
+                            headers: {
+                                accept: '*/*',
+                                withCredentials: true,
+                                'Content-Type': 'application/json',
+                            },
+                        },
+                    );
+
+                    console.log(res.data.data);
+                    return res.data.data;
                 } catch (error) {
                     throw new Error(error.message);
                 }
