@@ -16,7 +16,7 @@ import ArrowButton from '@/components/atoms/ArrowButton';
 import { getAllClassApi } from '@/axios/user';
 
 // utils
-// import { getImageFile } from '@/utils/getServerStorage';
+import { getImageFile } from '@/utils/getServerStorage';
 import { synth, speech } from '@/utils/textToSpeech';
 import recognition from '@/utils/speechRecognition';
 
@@ -24,13 +24,12 @@ const Kelas = () => {
     const { data } = useSession();
     const router = useRouter();
     const token = data?.user?.token;
-    // console.log(token);
+
+    const [kelas, setKelas] = useState([]);
 
     const handlePilihKelas = (idKelas) => {
         router.push(`/kelas/${idKelas}`);
     };
-
-    const [kelas, setKelas] = useState([]);
 
     useEffect(() => {
         if (token) {
@@ -43,30 +42,58 @@ const Kelas = () => {
         }
     }, [token]);
 
-    if (typeof window !== 'undefined') {
-        recognition.onresult = (event) => {
-            const command = event.results[0][0].transcript.toLowerCase();
-
-            if (command.includes('pergi home')) {
-                recognition.stop();
-                router.push('/');
-            } else if (
-                command.includes('saya sekarang dimana') ||
-                command.includes('saya sekarang di mana') ||
-                command.includes('saya di mana') ||
-                command.includes('saya dimana')
-            ) {
+    useEffect(() => {
+        if (kelas) {
+            if (kelas.length > 0) {
                 synth.cancel();
-                synth.speak(speech('Kita sedang di halaman kelas'));
+                synth.speak(speech('Selamat datang di Kelas.'));
+                synth.speak(speech(`Ditemukan ${kelas.length} kelas tersedia.`));
             }
+        }
+    }, [kelas]);
 
-            console.log(event.results[0][0].transcript.toLowerCase());
-        };
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            recognition.onresult = (event) => {
+                const command = event.results[0][0].transcript.toLowerCase();
 
-        recognition.onend = () => {
-            recognition.start();
-        };
-    }
+                if (command.includes('pergi home')) {
+                    recognition.stop();
+                    router.push('/');
+                } else if (command.includes('pergi rapor')) {
+                    recognition.stop();
+                    router.push('/rapor');
+                } else if (command.includes('sebutkan kelas')) {
+                    if (kelas.length > 0) {
+                        synth.cancel();
+                        synth.speak(speech(`Daftar kelas yaitu : `));
+                        for (let i = 0; i < kelas.length; i++) {
+                            synth.speak(speech(` ${kelas[i].name}`));
+                        }
+                    }
+                } else if (command.includes('jumlah kelas')) {
+                    if (kelas.length) {
+                        synth.cancel();
+                        synth.speak(speech(`Terdapat ${kelas.length} kelas.`));
+                    }
+                } else if (
+                    command.includes('saya sekarang dimana') ||
+                    command.includes('saya sekarang di mana') ||
+                    command.includes('saya di mana') ||
+                    command.includes('saya dimana')
+                ) {
+                    synth.cancel();
+                    synth.speak(speech('Kita sedang di halaman kelas'));
+                }
+
+                console.log(event.results[0][0].transcript.toLowerCase());
+            };
+
+            recognition.onend = () => {
+                recognition.start();
+            };
+        }
+    }, [router, kelas]);
 
     return (
         <>
@@ -96,7 +123,12 @@ const Kelas = () => {
                                           key={index}
                                           className='relative h-[400px] rounded-rad-7  bg-white  p-[14px] shadow-lg lg:col-span-1'>
                                           <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
-                                              <Image alt='' src={'/images/big-js.svg'} fill style={{ objectFit: 'cover' }} />
+                                              <Image
+                                                  alt=''
+                                                  src={getImageFile(kelasData.image)}
+                                                  fill
+                                                  style={{ objectFit: 'cover' }}
+                                              />
                                           </div>
                                           <h1 className='mt-[14px] text-body-2 font-bold'>{kelasData.name}</h1>
                                           <div className='mt-[46px] flex items-center gap-[10px]'>
