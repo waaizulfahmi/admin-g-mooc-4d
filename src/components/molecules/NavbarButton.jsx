@@ -12,6 +12,7 @@ import { logoutApi } from '@/axios/auth';
 // component
 import BorderedButton from '../atoms/BorderedButton';
 import FillButton from '../atoms/FillButton';
+import LabelPermission from '../organism/LabelPermission';
 
 const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btnFillText = 'Daftar' }) => {
     const path = usePathname();
@@ -35,6 +36,7 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
         case 'loading':
             return (
                 <div className={`${className} flex`}>
+                    <LabelPermission />
                     <FillButton onClick={() => signOut()} className='invisible px-[36px] py-[12px]'>
                         Keluar
                     </FillButton>
@@ -47,7 +49,8 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
             return (
                 <div className={`${className} flex`}>
                     {path === '/rapor' ? (
-                        <>
+                        <div className='flex items-center'>
+                            <LabelPermission />
                             <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
                                 {btnBorderedText}
                             </BorderedButton>
@@ -57,16 +60,18 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
                                 theme={path === '/rapor' ? 'light' : 'dark'}>
                                 Keluar
                             </BorderedButton>
-                        </>
+                        </div>
                     ) : (
-                        <>
+                        <div className='flex items-center'>
+                            {' '}
+                            <LabelPermission />
                             <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
                                 {btnBorderedText}
                             </BorderedButton>
                             <FillButton onClick={handleSignOut} className='w-[200px] py-[12px]'>
                                 Keluar
                             </FillButton>
-                        </>
+                        </div>
                     )}
                 </div>
             );

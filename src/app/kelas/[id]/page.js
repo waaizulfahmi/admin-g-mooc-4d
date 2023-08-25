@@ -37,8 +37,8 @@ function PilihKelas() {
                     const quiz = response.data.quiz;
                     setMateri(materi);
                     setQuiz(quiz);
-                    // console.log(response.data);
-                    // console.log('history', responseHistory);
+
+                    console.log('history', responseHistory);
                 } catch (error) {
                     console.log(error);
                 }

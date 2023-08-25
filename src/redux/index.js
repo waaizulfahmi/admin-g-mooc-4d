@@ -4,6 +4,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import adminSlice from './admin';
+import checkPermissionSlice from './check-permission';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
@@ -34,6 +35,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     admin: adminSlice,
+    checkPermission: checkPermissionSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

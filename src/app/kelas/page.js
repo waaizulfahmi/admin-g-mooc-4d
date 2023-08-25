@@ -17,6 +17,8 @@ import { getAllClassApi } from '@/axios/user';
 
 // utils
 // import { getImageFile } from '@/utils/getServerStorage';
+import { synth, speech } from '@/utils/textToSpeech';
+import recognition from '@/utils/speechRecognition';
 
 const Kelas = () => {
     const { data } = useSession();
@@ -41,7 +43,30 @@ const Kelas = () => {
         }
     }, [token]);
 
-    // console.log(kelas);
+    if (typeof window !== 'undefined') {
+        recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript.toLowerCase();
+
+            if (command.includes('pergi home')) {
+                recognition.stop();
+                router.push('/');
+            } else if (
+                command.includes('saya sekarang dimana') ||
+                command.includes('saya sekarang di mana') ||
+                command.includes('saya di mana') ||
+                command.includes('saya dimana')
+            ) {
+                synth.cancel();
+                synth.speak(speech('Kita sedang di halaman kelas'));
+            }
+
+            console.log(event.results[0][0].transcript.toLowerCase());
+        };
+
+        recognition.onend = () => {
+            recognition.start();
+        };
+    }
 
     return (
         <>
