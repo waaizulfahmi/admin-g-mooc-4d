@@ -141,6 +141,31 @@ export const getClassById = async ({ id, token }) => {
 };
 
 /* 
+@ROUTE : /user/kelas/${id} 
+*/
+export const getClassByLevel = async ({ id, token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+        if (!id) throw new Error('id must be submitted!');
+
+        const response = await apiInstance.get(`/user/kelas/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
+/* 
 @ROUTE : /user/materi/${id} 
 */
 export const getMateriById = async ({ id, token }) => {
