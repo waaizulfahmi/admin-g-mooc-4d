@@ -109,11 +109,11 @@ const Admin = () => {
 
                 {activeMenuId === 1 ? (
                     <div className='mt-[24px] '>
-                        <FillButton className='flex w-max items-center gap-5 px-[40px] py-[14px]'>
+                        {/* <FillButton className='flex w-max items-center gap-5 px-[40px] py-[14px]'>
                             <AiOutlinePlus /> Tambah Data
-                        </FillButton>
+                        </FillButton> */}
                         <div
-                            style={{ height: 'calc(100vh - 250px)' }}
+                            style={{ height: 'calc(100vh - 200px)' }}
                             className='mr-[40px] mt-[20px] overflow-x-auto overflow-y-scroll rounded-[28px]  bg-white drop-shadow '>
                             <table className='w-full text-left '>
                                 <thead className='sticky top-0 border-b border-gray-400 bg-gray-50 font-bold text-black'>
@@ -133,9 +133,9 @@ const Admin = () => {
                                         <th scope='col' className='px-6 py-4'>
                                             skor
                                         </th>
-                                        <th scope='col' className='px-6 py-4'>
+                                        {/* <th scope='col' className='px-6 py-4'>
                                             Aksi
-                                        </th>
+                                        </th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -151,7 +151,7 @@ const Admin = () => {
                                                   </td>
                                                   <td className='px-6 py-4 font-medium text-black'>40%</td>
                                                   <td className='px-6 py-4 font-medium text-black'>80</td>
-                                                  <td className='flex flex-col gap-1 px-6 py-4 font-medium text-black'>
+                                                  {/* <td className='flex flex-col gap-1 px-6 py-4 font-medium text-black'>
                                                       {' '}
                                                       <button className='flex w-max items-center rounded-[4px] bg-primary-1 p-[4px] text-white'>
                                                           <MdModeEdit />
@@ -161,7 +161,7 @@ const Admin = () => {
                                                           <MdDeleteOutline />
                                                           Edit
                                                       </button>
-                                                  </td>
+                                                  </td> */}
                                               </tr>
                                           ))
                                         : null}
