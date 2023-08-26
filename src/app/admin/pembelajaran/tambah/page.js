@@ -14,7 +14,7 @@ import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 
-const Pembelajaran = () => {
+const TambahPembelajaran = () => {
     const [notif, setNotif] = useState(false);
 
     const { setActiveMenuId } = adminSlice.actions;
@@ -68,15 +68,18 @@ const Pembelajaran = () => {
                     <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin')}>
                         Admin
                     </span>{' '}
-                    <span className='font-bold'>{'>'}</span> <span> List Kelas</span>
+                    <span className='font-bold'>{'>'}</span>{' '}
+                    <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin/pembelajaran')}>
+                        {' '}
+                        List Kelas
+                    </span>{' '}
+                    <span className='font-bold'>{'>'}</span> <span> Tambah Kelas</span>
                 </div>
-                <div className='mr-[40px] mt-[10px]'>
+                {/* <div className='mr-[40px] mt-[10px]'>
                     <div className='flex items-center justify-between '>
-                        <h1 className=' text-[30px] font-bold '>List Kelas</h1>
+                        
                         <div className='flex items-center gap-4'>
-                            <FillButton
-                                onClick={() => router.push('/admin/pembelajaran/tambah')}
-                                className='flex items-center gap-2 rounded-rad-5 px-[30px] py-[10px]'>
+                            <FillButton className='flex items-center gap-2 rounded-rad-5 px-[30px] py-[10px]'>
                                 <AiOutlinePlus /> Tambah Data
                             </FillButton>
                             <button className='flex items-center gap-2 rounded-rad-5 border border-black px-[20px] py-[10px] font-bold'>
@@ -99,61 +102,56 @@ const Pembelajaran = () => {
                             <span>Sulit</span>
                         </div>
                     </div>
-                </div>
-                <div
-                    style={{ height: 'calc(100vh - 220px)' }}
-                    className='mr-[40px] mt-[10px] grid grid-cols-12 gap-[30px] overflow-y-scroll'>
-                    <div className='relative col-span-3 h-[400px]   rounded-rad-7  bg-white p-[14px] shadow-lg '>
-                        <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
-                            <Image alt='' src={'/images/big-js.svg'} fill style={{ objectFit: 'cover' }} />
-                        </div>
-                        <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
-                        <div className='mt-[46px] flex items-center gap-[10px]'>
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <span>(10)</span>
-                        </div>
-                        <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
-                            <button className='flex items-center gap-2 rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
-                                <MdModeEdit />
-                                Edit
-                            </button>
-                            <button
-                                onClick={handleNotif}
-                                className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'>
-                                <MdDeleteOutline />
-                                Hapus
-                            </button>
-                        </div>
-                    </div>
-                    <div className='relative col-span-3 h-[400px]   rounded-rad-7  bg-white p-[14px] shadow-lg '>
-                        <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
-                            <Image alt='' src={'/images/typescript.png'} fill style={{ objectFit: 'cover' }} />
-                        </div>
-                        <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
-                        <div className='mt-[46px] flex items-center gap-[10px]'>
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <Image alt='' src={'/images/star.svg'} width={16} height={16} />
-                            <span>(10)</span>
-                        </div>
-                        <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
-                            <button className='flex items-center gap-2 rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
-                                <MdModeEdit />
-                                Edit
-                            </button>
-                            <button
-                                onClick={handleNotif}
-                                className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'>
-                                <MdDeleteOutline />
-                                Hapus
-                            </button>
-                        </div>
+                </div> */}
+                <div style={{ height: 'calc(100vh - 220px)' }} className='mr-[40px] mt-[40px]  '>
+                    <div className='w-max rounded-[28px] bg-white px-[54px] py-[40px] drop-shadow'>
+                        <h1 className='text-[20px] font-bold leading-[20px]'>Tambah Kelas</h1>
+                        <form className='mt-[20px] flex flex-col gap-3'>
+                            <div className='flex flex-col gap-1'>
+                                <label htmlFor=''>
+                                    Nama Kelas <span className='text-alert-1'>*</span>
+                                </label>
+                                <input
+                                    type='text'
+                                    className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <label htmlFor=''>
+                                    Deskripsi <span className='text-alert-1'>*</span>
+                                </label>
+                                <input
+                                    type='text'
+                                    className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <label htmlFor=''>
+                                    Nama Materi <span className='text-alert-1'>*</span>
+                                </label>
+                                <input
+                                    type='text'
+                                    className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <label htmlFor=''>
+                                    Link <span className='text-alert-1'>*</span>
+                                </label>
+                                <input
+                                    type='text'
+                                    className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                />
+                                <span className='text-[12px] font-bold'>Tambah Materi+</span>
+                            </div>
+                            <div className='mt-[10px] flex items-center justify-center'>
+                                <button
+                                    type='submit'
+                                    className='w-max    rounded-[10px] bg-primary-1  px-[40px] py-[8px] font-bold text-white'>
+                                    Simpan
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -162,4 +160,4 @@ const Pembelajaran = () => {
     );
 };
 
-export default Pembelajaran;
+export default TambahPembelajaran;
