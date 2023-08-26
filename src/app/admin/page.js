@@ -98,7 +98,7 @@ const Admin = () => {
                     onClick={() => router.replace('/login')}
                     className='absolute bottom-0 flex items-center gap-2 '>
                     <AiOutlinePoweroff className='font-bold text-[#EDF3F3]' />{' '}
-                    <span className='block font-semibold text-[#EDF3F3]'>Log Out</span>
+                    <span className='block font-semibold text-[#EDF3F3]'>Keluar</span>
                 </button>
             </div>
             <div className='col-span-10  rounded-bl-[28px] rounded-tl-[28px] bg-[#EDF3F3] pl-[40px] pt-[30px]'>

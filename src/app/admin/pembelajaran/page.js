@@ -60,7 +60,7 @@ const Pembelajaran = () => {
                     onClick={() => router.replace('/login')}
                     className='absolute bottom-0 flex items-center gap-2 '>
                     <AiOutlinePoweroff className='font-bold text-[#EDF3F3]' />{' '}
-                    <span className='block font-semibold text-[#EDF3F3]'>Log Out</span>
+                    <span className='block font-semibold text-[#EDF3F3]'>Keluar</span>
                 </button>
             </div>
             <div className='col-span-10  rounded-bl-[28px] rounded-tl-[28px] bg-[#EDF3F3] pl-[40px] pt-[30px]'>
@@ -133,7 +133,7 @@ const Pembelajaran = () => {
                         <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
                             <Image alt='' src={'/images/typescript.png'} fill style={{ objectFit: 'cover' }} />
                         </div>
-                        <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
+                        <h1 className='mt-[14px] text-body-2 font-bold'>TypeScript</h1>
                         <div className='mt-[46px] flex items-center gap-[10px]'>
                             <Image alt='' src={'/images/star.svg'} width={16} height={16} />
                             <Image alt='' src={'/images/star.svg'} width={16} height={16} />
