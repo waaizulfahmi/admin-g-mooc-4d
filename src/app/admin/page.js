@@ -8,8 +8,10 @@ import { navAdmin, customNavAdminIcon } from '@/data/nav-path';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { getActiveMenuId, adminSlice } from '@/redux/admin';
+import { MdDeleteOutline, MdModeEdit } from 'react-icons/md';
 
 import { adminGetAllUserApi, adminGetAllClassApi } from '@/axios/admin';
+// import ArrowButton from '@/components/atoms/ArrowButton';
 
 const adminMenu = (idAdminMenu) => {
     switch (idAdminMenu) {
@@ -87,7 +89,7 @@ const Admin = () => {
                 <button
                     type='button'
                     onClick={() => router.replace('/login')}
-                    className='absolute bottom-0 flex  items-center gap-2 '>
+                    className='absolute bottom-0 flex items-center gap-2 '>
                     <AiOutlinePoweroff className='font-bold text-[#EDF3F3]' />{' '}
                     <span className='block font-semibold text-[#EDF3F3]'>Log Out</span>
                 </button>
@@ -99,8 +101,8 @@ const Admin = () => {
                     <div
                         style={{ height: 'calc(100vh - 200px)' }}
                         className='mr-[40px] mt-[20px] overflow-x-auto overflow-y-scroll rounded-[28px]  bg-white '>
-                        <table className=' w-full  text-left '>
-                            <thead className='sticky top-0   border-b border-gray-400  bg-gray-50 font-bold text-black'>
+                        <table className='w-full text-left '>
+                            <thead className='sticky top-0 border-b border-gray-400 bg-gray-50 font-bold text-black'>
                                 <tr>
                                     <th scope='col' className='px-6 py-4'>
                                         No
@@ -120,12 +122,12 @@ const Admin = () => {
                                 {users
                                     ? users.map((user) => (
                                           <tr key={user.id_user} className='border-b border-gray-400 '>
-                                              <th scope='row' className='whitespace-nowrap px-6 py-4  font-medium text-black'>
+                                              <th scope='row' className='whitespace-nowrap px-6 py-4 font-medium text-black'>
                                                   {user.id_user}
                                               </th>
                                               <td className='px-6 py-4 font-medium text-black'>{user.name}</td>
-                                              <td className='px-6 py-4  font-medium text-black'>{user.email}</td>
-                                              <td className='px-6 py-4  font-medium text-black'>tidak ada</td>
+                                              <td className='px-6 py-4 font-medium text-black'>{user.email}</td>
+                                              <td className='px-6 py-4 font-medium text-black'>tidak ada</td>
                                           </tr>
                                       ))
                                     : null}
@@ -133,8 +135,105 @@ const Admin = () => {
                         </table>
                     </div>
                 ) : activeMenuId === 2 ? (
-                    <div style={{ height: 'calc(100vh - 200px)' }} className='mr-[40px] mt-[20px] bg-red-500'>
-                        <h1>Ada Kelas</h1>
+                    <div
+                        style={{ height: 'calc(100vh - 200px)' }}
+                        className='mr-[40px] mt-[20px] grid grid-cols-12 gap-[30px] overflow-y-scroll'>
+                        <div className='relative col-span-3 h-[400px]   rounded-rad-7  bg-white p-[14px] shadow-lg '>
+                            <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
+                                <Image alt='' src={'/images/big-js.svg'} fill style={{ objectFit: 'cover' }} />
+                            </div>
+                            <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
+                            <div className='mt-[46px] flex items-center gap-[10px]'>
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <span>(10)</span>
+                            </div>
+                            <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                    <MdModeEdit />
+                                    Edit
+                                </button>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'>
+                                    <MdDeleteOutline />
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div className='relative col-span-3 h-[400px]   rounded-rad-7  bg-white p-[14px] shadow-lg '>
+                            <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
+                                <Image alt='' src={'/images/big-js.svg'} fill style={{ objectFit: 'cover' }} />
+                            </div>
+                            <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
+                            <div className='mt-[46px] flex items-center gap-[10px]'>
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <span>(10)</span>
+                            </div>
+                            <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                    <MdModeEdit />
+                                    Edit
+                                </button>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'>
+                                    <MdDeleteOutline />
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div className='relative col-span-3 h-[400px]   rounded-rad-7  bg-white p-[14px] shadow-lg '>
+                            <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
+                                <Image alt='' src={'/images/big-js.svg'} fill style={{ objectFit: 'cover' }} />
+                            </div>
+                            <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
+                            <div className='mt-[46px] flex items-center gap-[10px]'>
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <span>(10)</span>
+                            </div>
+                            <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                    <MdModeEdit />
+                                    Edit
+                                </button>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'>
+                                    <MdDeleteOutline />
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div className='relative col-span-3 h-[400px]   rounded-rad-7  bg-white p-[14px] shadow-lg '>
+                            <div className='relative  h-[200px] w-full overflow-hidden rounded-rad-7'>
+                                <Image alt='' src={'/images/big-js.svg'} fill style={{ objectFit: 'cover' }} />
+                            </div>
+                            <h1 className='mt-[14px] text-body-2 font-bold'>JavaScript</h1>
+                            <div className='mt-[46px] flex items-center gap-[10px]'>
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <Image alt='' src={'/images/star.svg'} width={16} height={16} />
+                                <span>(10)</span>
+                            </div>
+                            <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                    <MdModeEdit />
+                                    Edit
+                                </button>
+                                <button className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'>
+                                    <MdDeleteOutline />
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 ) : activeMenuId === 3 ? (
                     <div style={{ height: 'calc(100vh - 200px)' }} className='mr-[40px] mt-[20px] bg-yellow-500'>

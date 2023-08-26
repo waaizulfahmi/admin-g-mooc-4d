@@ -12,6 +12,9 @@ import ArrowButton from '@/components/atoms/ArrowButton';
 
 // apis
 import { getClassById, getOrCreateHistory } from '@/axios/user';
+import HeroIcon from '@/components/atoms/HeroIcon';
+import NavbarButton from '@/components/molecules/NavbarButton';
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 
 function PilihKelas() {
     const { data } = useSession();
@@ -20,6 +23,10 @@ function PilihKelas() {
 
     const [materi, setMateri] = useState([]);
     const [quiz, setQuiz] = useState([]);
+    const [history, setHistory] = useState([]);
+
+    // console.log(materi);
+    // console.log(quiz);
 
     const router = useRouter();
 
@@ -35,10 +42,13 @@ function PilihKelas() {
                     const responseHistory = await getOrCreateHistory({ id_kelas: response.data.id_kelas, token: token });
                     const materi = response.data.materi;
                     const quiz = response.data.quiz;
+                    const history = responseHistory.data.history;
+
+                    // console.log(materi);
                     setMateri(materi);
                     setQuiz(quiz);
 
-                    console.log('history', responseHistory);
+                    console.log('history', responseHistory.data.history);
                 } catch (error) {
                     console.log(error);
                 }
@@ -106,12 +116,49 @@ function PilihKelas() {
     };
 
     return (
-        <>
-            <aside className='fixed left-0 top-0 h-screen w-64 bg-slate-400'>
-                <div className='ml-4 mt-4'>
-                    <ArrowButton onClick={backToClass} /> <span className='ml-2 text-body-2 font-bold'>Kembali</span>
+        <div className='h-screen bg-[#EDF3F3]'>
+            {/* <aside className='fixed top-0 left-0 w-64 h-screen bg-white'>
+                <div className='mt-4 ml-4'>
+                    <ArrowButton onClick={backToClass} /> <span className='ml-2 font-bold text-body-2'>Kembali</span>
                     <h1 className='mt-10 font-bold'>Materi</h1>
                     <div className='mr-4 mt-[10px] flex flex-col gap-3'>
+                        {ex_materi
+                            ? ex_materi.map((materi) => {
+                                  return (
+                                      <div key={materi.id_materi} className='px-2 py-2 bg-yellow-300 rounded-rad-4'>
+                                          <h1 className='font-bold'>{materi.name}</h1>
+                                      </div>
+                                  );
+                              })
+                            : null}
+                    </div>
+                    <h1 className='mt-10 font-bold'>Quiz</h1>
+                    <div>
+                        <div className='mr-4 mt-[10px] flex flex-col gap-3'>
+                            {ex_quiz ? (
+                                <div className='px-2 py-2 bg-yellow-300 rounded-rad-4'>
+                                    <h1 className='font-bold'>Quiz ke -{ex_quiz.id_quiz}</h1>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <div className='h-screen bg-[#F5F5F5]'>Kelas</div> */}
+
+            <nav className={` fixed top-0 z-20 w-screen  bg-[#EDF3F3] py-[20px]`}>
+                <div className='mx-auto flex max-w-screen-xl items-center justify-between '>
+                    <HeroIcon alt='icons' imgUrl={'/images/voice-icon.svg'} height={100} width={100} />
+                    <NavbarButton />
+                </div>
+            </nav>
+            <div
+                // style={{ height: 'calc(100vh - 100px)' }}
+                className='mx-auto grid  h-screen  max-w-screen-xl grid-cols-12 gap-5 pt-[100px]'>
+                <div className='col-span-3 rounded-[20px] bg-white  px-5 pt-3'>
+                    <h1>JavaScript</h1>
+                    <h1 className='mt-10 font-bold'>Materi</h1>
+                    <div className='mt-[10px] flex flex-col gap-3'>
                         {ex_materi
                             ? ex_materi.map((materi) => {
                                   return (
@@ -124,7 +171,7 @@ function PilihKelas() {
                     </div>
                     <h1 className='mt-10 font-bold'>Quiz</h1>
                     <div>
-                        <div className='mr-4 mt-[10px] flex flex-col gap-3'>
+                        <div className=' mt-[10px] flex flex-col gap-3'>
                             {ex_quiz ? (
                                 <div className='rounded-rad-4 bg-yellow-300 px-2 py-2'>
                                     <h1 className='font-bold'>Quiz ke -{ex_quiz.id_quiz}</h1>
@@ -133,9 +180,9 @@ function PilihKelas() {
                         </div>
                     </div>
                 </div>
-            </aside>
-            <div className='h-screen bg-red-500'>Kelas</div>
-        </>
+                <div className='col-span-9 bg-yellow-300'></div>
+            </div>
+        </div>
     );
 }
 

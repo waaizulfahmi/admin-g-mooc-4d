@@ -14,6 +14,8 @@ import BorderedButton from '../atoms/BorderedButton';
 import FillButton from '../atoms/FillButton';
 import LabelPermission from '../organism/LabelPermission';
 
+import { AiOutlinePoweroff } from 'react-icons/ai';
+
 const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btnFillText = 'Daftar' }) => {
     const path = usePathname();
     const { status, data } = useSession();
@@ -49,28 +51,40 @@ const NavbarButton = ({ className = 'gap-[33px]', btnBorderedText = 'Masuk', btn
             return (
                 <div className={`${className} flex`}>
                     {path === '/rapor' ? (
-                        <div className='flex items-center'>
+                        <div className='flex items-center gap-[40px]'>
                             <LabelPermission />
-                            <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
+                            {/* <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
                                 {btnBorderedText}
-                            </BorderedButton>
-                            <BorderedButton
+                            </BorderedButton> */}
+
+                            {/* <button>
+                                <AiOutlinePoweroff />
+                            </button> */}
+                            <button onClick={handleSignOut} className='flex items-center gap-2'>
+                                <AiOutlinePoweroff className='h-[30px] w-[30px] text-white' />
+                                <span className='font-bold text-white'>Keluar</span>
+                            </button>
+                            {/* <BorderedButton
                                 onClick={handleSignOut}
                                 className='w-[200px] py-[12px]'
                                 theme={path === '/rapor' ? 'light' : 'dark'}>
                                 Keluar
-                            </BorderedButton>
+                            </BorderedButton> */}
                         </div>
                     ) : (
-                        <div className='flex items-center'>
+                        <div className='flex items-center gap-[40px]'>
                             {' '}
                             <LabelPermission />
-                            <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
+                            {/* <BorderedButton className='invisible px-[36px] py-[12px]' theme='dark'>
                                 {btnBorderedText}
-                            </BorderedButton>
-                            <FillButton onClick={handleSignOut} className='w-[200px] py-[12px]'>
+                            </BorderedButton> */}
+                            <button onClick={handleSignOut} className='flex items-center gap-2'>
+                                <AiOutlinePoweroff className='h-[30px] w-[30px]' />
+                                <span className='font-bold'>Keluar</span>
+                            </button>
+                            {/* <FillButton onClick={handleSignOut} className='w-[200px] py-[12px]'>
                                 Keluar
-                            </FillButton>
+                            </FillButton> */}
                         </div>
                     )}
                 </div>

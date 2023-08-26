@@ -9,6 +9,8 @@ import { usePathname } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMicrophoneStatus, checkPermissionSlice } from '@/redux/check-permission';
 
+import { MdKeyboardVoice } from 'react-icons/md';
+
 const LabelPermission = ({ className = 'px-3 py-1' }) => {
     //redux
     const dispatch = useDispatch();
@@ -46,16 +48,18 @@ const LabelPermission = ({ className = 'px-3 py-1' }) => {
         return (
             <div
                 className={`${className} ${
-                    path === '/rapor' ? 'bg-white text-primary-1' : 'bg-primary-1 text-white'
-                } h-max rounded-rad-3  text-center `}>
-                <h1>Mikrofon Aktif</h1>
+                    path === '/rapor' ? ' text-white' : ' text-primary-1'
+                } flex h-max  items-center gap-1  text-center`}>
+                <MdKeyboardVoice className='h-[40px] w-[40px]' />
+                <h1 className='font-bold'>Mikrofon Aktif</h1>
             </div>
         );
     }
 
     return (
-        <div className={`${className} h-max rounded-rad-3 bg-red-600 text-center text-white`}>
-            <h1>Mikrofon mati</h1>
+        <div className={`${className} h-max items-center gap-1 rounded-rad-3 text-center text-red-600  `}>
+            <MdKeyboardVoice className='h-[40px] w-[40px]' />
+            <h1 className='font-bold'>Mikrofon Mati</h1>
         </div>
     );
 };

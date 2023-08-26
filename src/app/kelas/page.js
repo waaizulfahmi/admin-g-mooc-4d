@@ -96,26 +96,34 @@ const Kelas = () => {
     }, [router, kelas]);
 
     return (
-        <>
+        <div className='h-screen bg-[#EDF3F3]'>
             <Navbar />
-            <main style={{ height: 'calc(100vh - 90px)' }} className='mt-[90px] w-screen bg-[#F5F5F5] '>
-                <div className='mx-auto  grid  max-w-screen-xl grid-cols-12'>
-                    <div className='col-span-2 '>
-                        <h1 className='text-title-3 font-bold'>Filter</h1>
-                        <div className='mt-[50px] flex items-center gap-2'>
-                            <input type='checkbox' id='check' />
-                            <label htmlFor='check'>Mudah</label>
-                        </div>
-                        <div className='flex items-center gap-2 '>
-                            <input type='checkbox' id='check' />
-                            <label htmlFor='check'>Menengah</label>
-                        </div>
-                        <div className='flex items-center gap-2 '>
-                            <input type='checkbox' id='check' />
-                            <label htmlFor='check'>Sulit</label>
+            <main style={{ height: 'calc(100vh - 90px)' }} className='w-screen bg-[#EDF3F3] pt-[90px] '>
+                <div className='mx-auto grid max-w-screen-xl grid-cols-12'>
+                    <div className='col-span-3 '>
+                        <h1 className='text-[30px] font-bold leading-[30px]'>Sort</h1>
+                        <div className='mt-[30px] flex flex-col gap-[18px] '>
+                            <div className='flex items-center gap-2'>
+                                <input type='checkbox' id='check' className='h-[28px] w-[28px]' />
+                                <label htmlFor='check' className='font-bold'>
+                                    Mudah
+                                </label>
+                            </div>
+                            <div className='flex items-center gap-2 '>
+                                <input type='checkbox' id='check' className='h-[28px] w-[28px]' />
+                                <label htmlFor='check' className='font-bold'>
+                                    Menengah
+                                </label>
+                            </div>
+                            <div className='flex items-center gap-2 '>
+                                <input type='checkbox' id='check' className='h-[28px] w-[28px]' />
+                                <label htmlFor='check' className='font-bold'>
+                                    Sulit
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <div className='col-span-10 grid grid-cols-4 gap-[24px]  '>
+                    <div className='col-span-9 grid grid-cols-4 gap-[24px]  '>
                         {kelas.length
                             ? kelas.map((kelasData, index) => {
                                   return (
@@ -141,8 +149,6 @@ const Kelas = () => {
                                           </div>
                                           <ArrowButton
                                               onClick={() => handlePilihKelas(kelasData.id_kelas)}
-                                              widthIcon={30}
-                                              heightIcon={30}
                                               directionIcon={'right'}
                                               className='absolute bottom-[16px] right-[16px] p-[10px]'
                                           />
@@ -153,7 +159,7 @@ const Kelas = () => {
                     </div>
                 </div>
             </main>
-        </>
+        </div>
     );
 };
 

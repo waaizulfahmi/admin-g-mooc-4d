@@ -3,7 +3,7 @@ export const colorTheme = (path) => {
         case '/':
             return 'bg-white';
         case '/kelas':
-            return 'bg-[#F5F5F5]';
+            return 'bg-[#EDF3F3]';
         default:
             return 'bg-primary-1';
     }

@@ -8,9 +8,9 @@ import FillButton from '@/components/atoms/FillButton';
 
 const Rapor = () => {
     return (
-        <>
+        <div className='h-screen bg-primary-1'>
             <Navbar />
-            <main style={{ height: 'calc(100vh - 90px)' }} className='mt-[90px] w-screen bg-primary-1 '>
+            <main style={{ height: 'calc(100vh - 90px)' }} className='w-screen bg-primary-1 pt-[90px] '>
                 <section className='mx-auto grid max-w-screen-xl grid-cols-12 gap-[78px] '>
                     <div className='col-span-8 pt-[10px]'>
                         <div className='mb-[16px] flex items-center justify-between rounded-rad-7 bg-[#F5F5F5] py-[20px] '>
@@ -71,7 +71,7 @@ const Rapor = () => {
                     </div>
                 </section>
             </main>
-        </>
+        </div>
     );
 };
 

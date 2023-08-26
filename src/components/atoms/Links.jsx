@@ -19,7 +19,7 @@ const Links = ({ className = 'flex gap-[50px]', links }) => {
                                 className={`${
                                     link?.href?.toLowerCase() === path
                                         ? `${path === '/rapor' ? 'text-white' : 'text-primary-1 text-opacity-100'}`
-                                        : `${path === '/rapor' ? 'text-black text-opacity-80' : 'text-black text-opacity-50'}`
+                                        : `${path === '/rapor' ? 'text-white text-opacity-50' : 'text-black text-opacity-50'}`
                                 } cursor-pointer font-bold`}
                                 href={link?.href}>
                                 {link?.name}
