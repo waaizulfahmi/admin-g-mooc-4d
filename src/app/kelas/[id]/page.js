@@ -3,6 +3,7 @@
 // core
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 // third party
 import { useSession } from 'next-auth/react';
@@ -15,6 +16,7 @@ import { getClassById, getOrCreateHistory } from '@/axios/user';
 import HeroIcon from '@/components/atoms/HeroIcon';
 import NavbarButton from '@/components/molecules/NavbarButton';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
+import { MdPlayCircleOutline, MdOutlineQuestionAnswer } from 'react-icons/md';
 
 function PilihKelas() {
     const { data } = useSession();
@@ -117,35 +119,6 @@ function PilihKelas() {
 
     return (
         <div className='h-screen bg-[#EDF3F3]'>
-            {/* <aside className='fixed top-0 left-0 w-64 h-screen bg-white'>
-                <div className='mt-4 ml-4'>
-                    <ArrowButton onClick={backToClass} /> <span className='ml-2 font-bold text-body-2'>Kembali</span>
-                    <h1 className='mt-10 font-bold'>Materi</h1>
-                    <div className='mr-4 mt-[10px] flex flex-col gap-3'>
-                        {ex_materi
-                            ? ex_materi.map((materi) => {
-                                  return (
-                                      <div key={materi.id_materi} className='px-2 py-2 bg-yellow-300 rounded-rad-4'>
-                                          <h1 className='font-bold'>{materi.name}</h1>
-                                      </div>
-                                  );
-                              })
-                            : null}
-                    </div>
-                    <h1 className='mt-10 font-bold'>Quiz</h1>
-                    <div>
-                        <div className='mr-4 mt-[10px] flex flex-col gap-3'>
-                            {ex_quiz ? (
-                                <div className='px-2 py-2 bg-yellow-300 rounded-rad-4'>
-                                    <h1 className='font-bold'>Quiz ke -{ex_quiz.id_quiz}</h1>
-                                </div>
-                            ) : null}
-                        </div>
-                    </div>
-                </div>
-            </aside>
-            <div className='h-screen bg-[#F5F5F5]'>Kelas</div> */}
-
             <nav className={` fixed top-0 z-20 w-screen  bg-[#EDF3F3] py-[20px]`}>
                 <div className='mx-auto flex max-w-screen-xl items-center justify-between '>
                     <HeroIcon alt='icons' imgUrl={'/images/voice-icon.svg'} height={100} width={100} />
@@ -155,32 +128,44 @@ function PilihKelas() {
             <div
                 // style={{ height: 'calc(100vh - 100px)' }}
                 className='mx-auto grid  h-screen  max-w-screen-xl grid-cols-12 gap-5 pt-[100px]'>
-                <div className='col-span-3 rounded-[20px] bg-white  px-5 pt-3'>
-                    <h1>JavaScript</h1>
-                    <h1 className='mt-10 font-bold'>Materi</h1>
-                    <div className='mt-[10px] flex flex-col gap-3'>
-                        {ex_materi
-                            ? ex_materi.map((materi) => {
-                                  return (
-                                      <div key={materi.id_materi} className='rounded-rad-4 bg-yellow-300 px-2 py-2'>
-                                          <h1 className='font-bold'>{materi.name}</h1>
-                                      </div>
-                                  );
-                              })
-                            : null}
+                <div className='col-span-3  rounded-[20px]  bg-white p-[24px]'>
+                    <div className='rounded-[10px] bg-[#E7A645] p-[16px]'>
+                        <h1 className='font-bold text-white'>Persiapan Kelas</h1>
+                        <p className='text-[12px] text-white'>Trailer Kelas</p>
                     </div>
-                    <h1 className='mt-10 font-bold'>Quiz</h1>
-                    <div>
-                        <div className=' mt-[10px] flex flex-col gap-3'>
-                            {ex_quiz ? (
-                                <div className='rounded-rad-4 bg-yellow-300 px-2 py-2'>
-                                    <h1 className='font-bold'>Quiz ke -{ex_quiz.id_quiz}</h1>
-                                </div>
-                            ) : null}
+
+                    <div className='mt-[20px]  rounded-[10px] bg-[#E7A645] p-[16px]'>
+                        <div>
+                            <h1 className='font-bold text-white'>Materi</h1>
+                            <p className='text-[12px] text-white'>3 Video</p>
+                        </div>
+                        <div className='mt-[18px] flex flex-col gap-3'>
+                            <div className='flex items-center gap-[8px] rounded-[10px] bg-white p-[20px] font-bold text-[#CF8618] '>
+                                <MdPlayCircleOutline className='h-[20px] w-[20px] ' /> <span>Video 1</span>
+                            </div>
+                            <div className='flex items-center gap-[8px] rounded-[10px] bg-white p-[20px] font-bold text-[#CF8618] '>
+                                <MdPlayCircleOutline className='h-[20px] w-[20px]' /> <span>Video 2</span>
+                            </div>
+                            <div className='flex items-center gap-[8px] rounded-[10px] bg-white p-[20px] font-bold text-[#CF8618]'>
+                                <MdPlayCircleOutline className='h-[20px] w-[20px]' /> <span>Video 3 </span>
+                            </div>
+                        </div>
+                        <div className='mt-[18px]'>
+                            <h1 className='font-bold text-white'>Quiz</h1>
+                            <p className='text-[12px] text-white'>1 soal</p>
+                        </div>
+                        <div className='mt-[18px] flex flex-col gap-3'>
+                            <div className='flex items-center gap-[8px] rounded-[10px] bg-white p-[20px] font-bold text-[#CF8618]'>
+                                <MdOutlineQuestionAnswer className='h-[20px] w-[20px]' /> <span>Soal</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className='col-span-9 bg-yellow-300'></div>
+                <div className='col-span-9 '>
+                    <div className='relative h-[500px] w-full overflow-hidden rounded-[20px]'>
+                        <Image alt='' src={'/images/video-player.png'} fill />
+                    </div>
+                </div>
             </div>
         </div>
     );
