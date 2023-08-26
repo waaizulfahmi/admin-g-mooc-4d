@@ -72,7 +72,7 @@ const CheckPermission = () => {
 
                                 <div className='mt-5 flex flex-col gap-3'>
                                     <h1 className='font-bold text-black text-opacity-50'>Status Mikrofon :</h1>
-                                    <LabelPermission className='px-5 py-3 text-title-3 font-bold' />
+                                    <LabelPermission className='px-5 py-3 text-[20px] font-bold' />
                                 </div>
                             </div>
                             {/* divider */}
@@ -101,7 +101,7 @@ const CheckPermission = () => {
                                         onClick={() => dispatch(setIsPermit(!isPermit))}
                                         className={`${
                                             status ? ' opacity-100' : ' opacity-50'
-                                        } bg-color-1 border-color-1 rounded-rad-3 border px-5 py-2  text-title-3 font-semibold text-white`}>
+                                        } bg-color-1 border-color-1 rounded-rad-3 border px-5 py-2  text-[20px] font-semibold text-white`}>
                                         {statusMsg}
                                     </FillButton>
                                 </div>
