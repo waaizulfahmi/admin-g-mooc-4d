@@ -12,23 +12,7 @@ import { MdDeleteOutline, MdModeEdit } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 
-import { adminGetAllUserApi, adminGetAllClassApi } from '@/axios/admin';
-// import ArrowButton from '@/components/atoms/ArrowButton';
-
-// const breadCrumb = (sideMenu) => {
-//     switch (sideMenu) {
-//         case 'mahasiswa':
-//             return 'Semua Siswa';
-//         case 'menu':
-//             return 'Kelas';
-//         case 'quiz':
-//             return 'Materi';
-//         case 'kelas':
-//             return 'Quiz';
-//     }
-// };
-
-const Admin = () => {
+const Quiz = () => {
     const { setActiveMenuId } = adminSlice.actions;
     const dispatch = useDispatch();
     const activeMenuId = useSelector(getActiveMenuId);
@@ -39,36 +23,6 @@ const Admin = () => {
     const [users, setUsers] = useState([]);
     const [classes, setClasses] = useState([]);
 
-    useEffect(() => {
-        if (token) {
-            if (activeMenuId === 1) {
-                const fetchApi = async () => {
-                    try {
-                        const response = await adminGetAllUserApi({ token });
-                        setUsers(response.data);
-                    } catch (error) {
-                        console.log('ADMIN GET ALL USER: ', error.message);
-                    }
-                };
-
-                fetchApi();
-            } else if (activeMenuId === 2) {
-                const fetchApi = async () => {
-                    try {
-                        const response = await adminGetAllClassApi({ token });
-                        setClasses(response.data);
-                    } catch (error) {
-                        console.log('ADMIN GET ALL Class: ', error.message);
-                    }
-                };
-
-                fetchApi();
-            }
-        }
-    }, [activeMenuId, token]);
-
-    console.log(classes);
-
     return (
         <section className='grid h-screen  w-screen grid-cols-12 bg-primary-1 py-[20px]'>
             <div className='relative col-span-2 mx-[40px] '>
@@ -77,7 +31,10 @@ const Admin = () => {
                     {navAdmin.length
                         ? navAdmin.map((nav) => (
                               <li
-                                  onClick={() => dispatch(setActiveMenuId(nav.id))}
+                                  onClick={() => {
+                                      dispatch(setActiveMenuId(nav.id));
+                                      router.replace('/admin');
+                                  }}
                                   key={nav.id}
                                   className='flex cursor-pointer items-center gap-2'>
                                   {activeMenuId === nav.id
@@ -107,7 +64,7 @@ const Admin = () => {
                     Hi Admin ! {activeMenuId === 1 ? 'Selamat Datang di Dashboard' : 'Silahkan Pilih Menu'}
                 </p>
 
-                {activeMenuId === 1 ? (
+                {/* {activeMenuId === 1 ? (
                     <div className='mt-[24px] '>
                         <FillButton className='flex w-max items-center gap-5 px-[40px] py-[14px]'>
                             <AiOutlinePlus /> Tambah Data
@@ -116,7 +73,7 @@ const Admin = () => {
                             style={{ height: 'calc(100vh - 250px)' }}
                             className='mr-[40px] mt-[20px] overflow-x-auto overflow-y-scroll rounded-[28px]  bg-white drop-shadow '>
                             <table className='w-full text-left '>
-                                <thead className='sticky top-0 border-b border-gray-400 bg-gray-50 font-bold text-black'>
+                                <thead className='sticky top-0 font-bold text-black border-b border-gray-400 bg-gray-50'>
                                     <tr>
                                         <th scope='col' className='px-6 py-4'>
                                             No
@@ -142,7 +99,7 @@ const Admin = () => {
                                     {users
                                         ? users.map((user) => (
                                               <tr key={user.id_user} className='border-b border-gray-400 '>
-                                                  <th scope='row' className='whitespace-nowrap px-6 py-4 font-medium text-black'>
+                                                  <th scope='row' className='px-6 py-4 font-medium text-black whitespace-nowrap'>
                                                       {user.id_user}
                                                   </th>
                                                   <td className='px-6 py-4 font-medium text-black'>{user.name}</td>
@@ -174,11 +131,7 @@ const Admin = () => {
                         <div className='flex w-max flex-col items-center gap-3 rounded-[20px] bg-white px-[40px] pb-[20px] pt-[14px]'>
                             <Image alt='' src={'/images/quiz.png'} height={121} width={90} />
                             <p className='font-bold'>Quiz</p>
-                            <FillButton
-                                onClick={() => router.push('/admin/quiz')}
-                                className='w-max rounded-[10px] px-[40px] py-[10px]'>
-                                Pilih
-                            </FillButton>
+                            <FillButton className='w-max rounded-[10px] px-[40px] py-[10px]'>Pilih</FillButton>
                         </div>
                         <div className='flex w-max flex-col items-center gap-3 rounded-[20px] bg-white px-[40px] pb-[20px] pt-[14px]'>
                             <Image alt='' src={'/images/materi.png'} height={121} width={90} />
@@ -190,10 +143,10 @@ const Admin = () => {
                             </FillButton>
                         </div>
                     </div>
-                ) : null}
+                ) : null} */}
             </div>
         </section>
     );
 };
 
-export default Admin;
+export default Quiz;
