@@ -122,7 +122,15 @@ function PilihKelas() {
             <nav className={` fixed top-0 z-20 w-screen  bg-[#EDF3F3] py-[20px]`}>
                 <div className='mx-auto flex max-w-screen-xl items-center justify-between '>
                     <HeroIcon alt='icons' imgUrl={'/images/voice-icon.svg'} height={100} width={100} />
-                    <NavbarButton />
+                    <div className=' flex items-center gap-[200px]'>
+                        <div className='flex items-center gap-[14px]'>
+                            <div className='flex h-[20px] w-[20px] items-center justify-center rounded-full  border-[4px] border-black  p-3 font-bold'>
+                                C
+                            </div>{' '}
+                            <span className=' text-[16px] font-bold leading-[20px]'>0</span>
+                        </div>
+                        <NavbarButton />
+                    </div>
                 </div>
             </nav>
             <div
@@ -140,7 +148,7 @@ function PilihKelas() {
                             <p className='text-[12px] text-white'>3 Video</p>
                         </div>
                         <div className='mt-[18px] flex flex-col gap-3'>
-                            <div className='flex items-center gap-[8px] rounded-[10px] bg-white p-[20px] font-bold text-[#CF8618] '>
+                            <div className='flex items-center gap-[8px] rounded-[10px] bg-[#CF8618] p-[20px] font-bold text-white '>
                                 <MdPlayCircleOutline className='h-[20px] w-[20px] ' /> <span>Video 1</span>
                             </div>
                             <div className='flex items-center gap-[8px] rounded-[10px] bg-white p-[20px] font-bold text-[#CF8618] '>
