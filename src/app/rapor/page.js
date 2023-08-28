@@ -1,12 +1,82 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // components
 import Navbar from '@/components/organism/Navbar';
 import FillButton from '@/components/atoms/FillButton';
 
+import { synth, speech } from '@/utils/textToSpeech';
+import recognition from '@/utils/speechRecognition';
+
+// import { useSelector, useDispatch } from 'react-redux';
+// import { getListening, speechRecognitionSlice } from '@/redux/speech-recognition';
+
 const Rapor = () => {
+    const [speaking, setSpeaking] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        try {
+            recognition.start();
+        } catch (error) {
+            recognition.stop();
+        }
+        // recognition.start();
+    }, []);
+
+    useEffect(() => {
+        recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript.toLowerCase();
+
+            if (command.includes('pergi kelas')) {
+                recognition.stop();
+                let utterance = speech('Anda akan pergi ke Daftar Kelas');
+                setSpeaking(true);
+                // dispatch(setListening(true));
+                utterance.onend = () => {
+                    recognition.stop();
+                    router.push('/kelas');
+                };
+                synth.speak(utterance);
+            } else if (command.includes('pergi home') || command.includes('home')) {
+                recognition.stop();
+                let utterance = speech('Anda akan pergi ke Home');
+                setSpeaking(true);
+                // dispatch(setListening(true));
+                utterance.onend = () => {
+                    recognition.stop();
+                    router.push('/');
+                };
+                synth.speak(utterance);
+            } else if (
+                command.includes('saya sekarang dimana') ||
+                command.includes('saya sekarang di mana') ||
+                command.includes('saya di mana') ||
+                command.includes('saya dimana')
+            ) {
+                recognition.stop();
+                let utterance = speech('Kita sedang di halaman rapor');
+                setSpeaking(true);
+                // dispatch(setListening(true));
+                utterance.onend = () => {
+                    recognition.start();
+                    setSpeaking(false);
+                };
+                synth.speak(utterance);
+            }
+
+            console.log(event.results[0][0].transcript.toLowerCase());
+        };
+        recognition.onend = () => {
+            if (!speaking) {
+                recognition.start();
+            }
+        };
+    }, [speaking, router]);
+
     return (
         <div className='h-screen bg-primary-1'>
             <Navbar />

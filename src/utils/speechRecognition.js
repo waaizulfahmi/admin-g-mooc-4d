@@ -6,7 +6,7 @@ const recognition = typeof window !== 'undefined' && new SpeechRecognition();
 
 if (typeof window !== 'undefined') {
     recognition.lang = 'id';
-    recognition.start();
+    // recognition.start();
 }
 
 export default recognition;

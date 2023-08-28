@@ -20,16 +20,32 @@ import { getImageFile } from '@/utils/getServerStorage';
 import { synth, speech } from '@/utils/textToSpeech';
 import recognition from '@/utils/speechRecognition';
 
+// import { useSelector, useDispatch } from 'react-redux';
+// import { getListening, speechRecognitionSlice } from '@/redux/speech-recognition';
+
 const Kelas = () => {
     const { data } = useSession();
     const router = useRouter();
     const token = data?.user?.token;
-
+    const [speaking, setSpeaking] = useState(false);
     const [kelas, setKelas] = useState([]);
+    // const [mount, setMount] = useState(false);
+    // const { setListening } = speechRecognitionSlice.actions;
+    // const listening = useSelector(getListening);
+    // const dispatch = useDispatch();
 
     const handlePilihKelas = (idKelas) => {
         router.push(`/kelas/${idKelas}`);
     };
+
+    // useEffect(() => {
+    //     // recognition.stop();
+    //     recognition.start();
+    //     setMount(true);
+    //     // recognition.onerror = (event) => {
+    //     //     console.error(`Speech recognition error detected: ${event.error}`);
+    //     // };
+    // }, []);
 
     useEffect(() => {
         if (token) {
@@ -43,57 +59,85 @@ const Kelas = () => {
     }, [token]);
 
     useEffect(() => {
+        try {
+            recognition.start();
+        } catch (error) {
+            recognition.stop();
+        }
+        // recognition.start();
+    }, []);
+
+    useEffect(() => {
         if (kelas) {
             if (kelas.length > 0) {
-                synth.cancel();
-                synth.speak(speech('Selamat datang di Kelas.'));
-                synth.speak(speech(`Ditemukan ${kelas.length} kelas tersedia.`));
+                let utterance = speech(`Selamat datang di Kelas.\nDitemukan ${kelas.length} kelas tersedia.`);
+                setSpeaking(true);
+                recognition.stop();
+                utterance.onend = () => {
+                    recognition.start();
+                    setSpeaking(false);
+                };
+                synth.speak(utterance);
             }
         }
     }, [kelas]);
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            recognition.onresult = (event) => {
-                const command = event.results[0][0].transcript.toLowerCase();
+        recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript.toLowerCase();
 
-                if (command.includes('pergi home')) {
-                    recognition.stop();
+            if (command.includes('pergi home')) {
+                recognition.stop();
+                let utterance = speech('Anda akan pergi ke Beranda');
+                setSpeaking(true);
+                // dispatch(setListening(true));
+                utterance.onend = () => {
+                    // recognition.stop();
                     router.push('/');
-                } else if (command.includes('pergi rapor')) {
-                    recognition.stop();
+                };
+                synth.speak(utterance);
+            } else if (command.includes('pergi rapor')) {
+                recognition.stop();
+                let utterance = speech('Anda akan pergi ke Rapor');
+                setSpeaking(true);
+                // dispatch(setListening(true));
+                utterance.onend = () => {
+                    // recognition.stop();
                     router.push('/rapor');
-                } else if (command.includes('sebutkan kelas')) {
-                    if (kelas.length > 0) {
-                        synth.cancel();
-                        synth.speak(speech(`Daftar kelas yaitu : `));
-                        for (let i = 0; i < kelas.length; i++) {
-                            synth.speak(speech(` ${kelas[i].name}`));
-                        }
-                    }
-                } else if (command.includes('jumlah kelas')) {
-                    if (kelas.length) {
-                        synth.cancel();
-                        synth.speak(speech(`Terdapat ${kelas.length} kelas.`));
-                    }
-                } else if (
-                    command.includes('saya sekarang dimana') ||
-                    command.includes('saya sekarang di mana') ||
-                    command.includes('saya di mana') ||
-                    command.includes('saya dimana')
-                ) {
+                };
+                synth.speak(utterance);
+            } else if (command.includes('sebutkan kelas')) {
+                if (kelas.length > 0) {
                     synth.cancel();
-                    synth.speak(speech('Kita sedang di halaman kelas'));
+                    synth.speak(speech(`Daftar kelas yaitu : `));
+                    for (let i = 0; i < kelas.length; i++) {
+                        synth.speak(speech(` ${kelas[i].name}`));
+                    }
                 }
+            } else if (command.includes('jumlah kelas')) {
+                if (kelas.length) {
+                    synth.cancel();
+                    synth.speak(speech(`Terdapat ${kelas.length} kelas.`));
+                }
+            } else if (
+                command.includes('saya sekarang dimana') ||
+                command.includes('saya sekarang di mana') ||
+                command.includes('saya di mana') ||
+                command.includes('saya dimana')
+            ) {
+                synth.cancel();
+                synth.speak(speech('Kita sedang di halaman kelas'));
+            }
 
-                console.log(event.results[0][0].transcript.toLowerCase());
-            };
+            console.log(event.results[0][0].transcript.toLowerCase());
+        };
 
-            recognition.onend = () => {
+        recognition.onend = () => {
+            if (!speaking) {
                 recognition.start();
-            };
-        }
-    }, [router, kelas]);
+            }
+        };
+    }, [router, kelas, speaking]);
 
     return (
         <div className='h-screen bg-[#EDF3F3]'>

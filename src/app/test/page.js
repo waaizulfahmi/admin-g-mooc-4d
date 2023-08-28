@@ -1,79 +1,43 @@
 'use client';
 
-// core
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-import { useSession } from 'next-auth/react';
-
-// component
-import Navbar from '@/components/organism/Navbar';
-import Hero from '@/components/organism/Hero';
-import CheckPermission from '@/components/organism/CheckPermission';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { getListening, speechRecognitionSlice } from '@/redux/speech-recognition';
 
 import { synth, speech } from '@/utils/textToSpeech';
 import recognition from '@/utils/speechRecognition';
-import { useEffect } from 'react';
 
-const Beranda = () => {
-    const router = useRouter();
-    const { data } = useSession();
-    const user = data?.user.name;
+const Test = () => {
     const [speaking, setSpeaking] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        try {
-            recognition.start();
-        } catch (error) {
-            recognition.stop();
-        }
-        // recognition.start();
+        recognition.start();
     }, []);
-
-    useEffect(() => {
-        if (user) {
-            // let utterance = speech(`Selamat datang di Voice See, ${user}.`);
-            // recognition.stop();
-            // setSpeaking(true);
-            // utterance.onend = () => {
-            //     recognition.start();
-            //     setSpeaking(false);
-            // };
-            synth.speak(speech(`Selamat datang di Voice See, ${user}.`));
-        }
-    }, [user]);
 
     useEffect(() => {
         recognition.onresult = (event) => {
             const command = event.results[0][0].transcript.toLowerCase();
 
-            if (command.includes('pergi kelas')) {
+            if (command.includes('pergi home')) {
                 recognition.stop();
-                let utterance = speech('Anda akan pergi ke Daftar Kelas');
+                let utterance = speech('Anda akan pergi ke Home');
                 setSpeaking(true);
+                // dispatch(setListening(true));
+
                 utterance.onend = () => {
                     recognition.stop();
-                    router.push('/kelas');
+                    router.push('/');
                 };
                 synth.speak(utterance);
             } else if (command.includes('pergi rapor')) {
                 recognition.stop();
                 let utterance = speech('Anda akan pergi ke Rapor');
                 setSpeaking(true);
+                // dispatch(setListening(true));
+
                 utterance.onend = () => {
                     recognition.stop();
                     router.push('/rapor');
-                };
-                synth.speak(utterance);
-            } else if (command.includes('pergi tes')) {
-                recognition.stop();
-                let utterance = speech('Anda akan pergi ke test');
-                setSpeaking(true);
-                utterance.onend = () => {
-                    recognition.stop();
-                    router.push('/test');
                 };
                 synth.speak(utterance);
             } else if (
@@ -105,12 +69,10 @@ const Beranda = () => {
     }, [router, speaking]);
 
     return (
-        <>
-            <Navbar />
-            <Hero />
-            <CheckPermission />
-        </>
+        <div>
+            <h1>Hello World</h1>
+        </div>
     );
 };
 
-export default Beranda;
+export default Test;
