@@ -4,7 +4,7 @@ export const speech = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'id';
     utterance.pitch = 1;
-    utterance.rate = 0.9;
+    utterance.rate = 1;
     utterance.volume = 2;
     return utterance;
 };

@@ -29,18 +29,10 @@ const Beranda = () => {
         } catch (error) {
             recognition.stop();
         }
-        // recognition.start();
     }, []);
 
     useEffect(() => {
         if (user) {
-            // let utterance = speech(`Selamat datang di Voice See, ${user}.`);
-            // recognition.stop();
-            // setSpeaking(true);
-            // utterance.onend = () => {
-            //     recognition.start();
-            //     setSpeaking(false);
-            // };
             synth.speak(speech(`Selamat datang di Voice See, ${user}.`));
         }
     }, [user]);
@@ -82,16 +74,8 @@ const Beranda = () => {
                 command.includes('saya di mana') ||
                 command.includes('saya dimana')
             ) {
-                recognition.stop();
-                let utterance = speech('Kita sedang di halaman utama');
-                setSpeaking(true);
-                // dispatch(setListening(true));
-                utterance.onend = () => {
-                    recognition.start();
-                    setSpeaking(false);
-                    // dispatch(setListening(false));
-                };
-                synth.speak(utterance);
+                synth.cancel();
+                synth.speak(speech('Kita sedang di halaman utama'));
             }
 
             console.log(event.results[0][0].transcript.toLowerCase());

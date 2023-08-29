@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 // third party
 import { useSession } from 'next-auth/react';
@@ -29,29 +30,26 @@ const Kelas = () => {
     const token = data?.user?.token;
     const [speaking, setSpeaking] = useState(false);
     const [kelas, setKelas] = useState([]);
-    // const [mount, setMount] = useState(false);
-    // const { setListening } = speechRecognitionSlice.actions;
-    // const listening = useSelector(getListening);
-    // const dispatch = useDispatch();
+    const [isCari, setCari] = useState(false);
+    const [isLevel, setLevel] = useState(false);
+    // const [listening, setListening] = useState(false);
 
     const handlePilihKelas = (idKelas) => {
         router.push(`/kelas/${idKelas}`);
     };
 
-    // useEffect(() => {
-    //     // recognition.stop();
-    //     recognition.start();
-    //     setMount(true);
-    //     // recognition.onerror = (event) => {
-    //     //     console.error(`Speech recognition error detected: ${event.error}`);
-    //     // };
-    // }, []);
-
     useEffect(() => {
         if (token) {
             const fetchApi = async () => {
-                const response = await getAllClassApi({ token });
-                setKelas(response.data);
+                try {
+                    const response = await getAllClassApi({ token });
+                    setKelas(response.data);
+                    synth.cancel();
+                    synth.speak(speech(`Selamat datang di Kelas.\nDitemukan ${response.data.length} kelas tersedia.`));
+                } catch (error) {
+                    synth.cancel();
+                    synth.speak(speech(`Kelas tidak ditemukan!`));
+                }
             };
 
             fetchApi();
@@ -64,49 +62,202 @@ const Kelas = () => {
         } catch (error) {
             recognition.stop();
         }
-        // recognition.start();
     }, []);
-
-    useEffect(() => {
-        if (kelas) {
-            if (kelas.length > 0) {
-                let utterance = speech(`Selamat datang di Kelas.\nDitemukan ${kelas.length} kelas tersedia.`);
-                setSpeaking(true);
-                recognition.stop();
-                utterance.onend = () => {
-                    recognition.start();
-                    setSpeaking(false);
-                };
-                synth.speak(utterance);
-            }
-        }
-    }, [kelas]);
 
     useEffect(() => {
         recognition.onresult = (event) => {
             const command = event.results[0][0].transcript.toLowerCase();
+            const cleanCommand = command?.replace('.', '');
 
-            if (command.includes('pergi home')) {
-                recognition.stop();
+            if (isCari) {
+                if (token) {
+                    synth.speak(speech(`Mencari ${command}`));
+                    const fetchApi = async () => {
+                        try {
+                            const response = await axios.get(`https://nurz.site/api/user/kelasByName/${cleanCommand}`, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token}`,
+                                },
+                            });
+
+                            console.log(response.data);
+
+                            if (!response.data.data.length) {
+                                synth.speak(speech(`Kelas tidak ditemukan`));
+                                setCari(false);
+                                return;
+                            }
+
+                            if (response.data.data.length > 0) {
+                                setKelas(response.data.data);
+                                synth.speak(speech('Ditemukan kelas'));
+                                for (let i = 0; i < response.data.data.length; i++) {
+                                    synth.speak(speech(` ${response.data.data[i].name}`));
+                                }
+                                setCari(false);
+                            }
+                        } catch (error) {
+                            setCari(false);
+                            setSpeaking(false);
+                            synth.speak(`Kelas tidak ditemukan`);
+                        }
+                    };
+                    fetchApi();
+                }
+            }
+
+            if (cleanCommand.includes('cari kelas')) {
+                const level = cleanCommand.replace('cari kelas', '').trim().toLowerCase();
+                if (level.includes('mudah')) {
+                    console.log('buat cari ', cleanCommand);
+                    // console.log('my level', 'mudah');
+                    if (token) {
+                        // synth.speak(speech(`Mencari ${command}`));
+                        const fetchApi = async () => {
+                            try {
+                                const response = await axios.get(`https://nurz.site/api/user/kelasByLevel/1`, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Authorization: `Bearer ${token}`,
+                                    },
+                                });
+
+                                console.log(response.data);
+
+                                if (!response.data.data.kelas.length) {
+                                    synth.speak(speech(`Kelas tidak ditemukan`));
+                                    // setCari(false);
+                                    return;
+                                }
+
+                                if (response.data.data.kelas.length > 0) {
+                                    setKelas(response.data.data.kelas);
+                                    synth.speak(speech('Ditemukan kelas dengan level mudah'));
+                                    for (let i = 0; i < response.data.data.kelas.length; i++) {
+                                        synth.speak(speech(`kelas ${response.data.data.kelas[i].name}`));
+                                    }
+                                    // setCari(false);
+                                }
+                            } catch (error) {
+                                // setCari(false);
+                                // setSpeaking(false);
+                                synth.speak(`Kelas tidak ditemukan`);
+                            }
+                        };
+                        fetchApi();
+                    }
+                } else if (level.includes('menengah')) {
+                    // console.log('my level', 'menengah');
+                    console.log('buat cari ', cleanCommand);
+                    // console.log('my level', 'mudah');
+                    if (token) {
+                        // synth.speak(speech(`Mencari ${command}`));
+                        const fetchApi = async () => {
+                            try {
+                                const response = await axios.get(`https://nurz.site/api/user/kelasByLevel/2`, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Authorization: `Bearer ${token}`,
+                                    },
+                                });
+
+                                console.log(response.data);
+
+                                if (!response.data.data.kelas.length) {
+                                    synth.speak(speech(`Kelas tidak ditemukan`));
+                                    // setCari(false);
+                                    return;
+                                }
+
+                                if (response.data.data.kelas.length > 0) {
+                                    setKelas(response.data.data.kelas);
+                                    synth.speak(speech('Ditemukan kelas dengan level mudah'));
+                                    for (let i = 0; i < response.data.data.kelas.length; i++) {
+                                        synth.speak(speech(`kelas ${response.data.data.kelas[i].name}`));
+                                    }
+                                    // setCari(false);
+                                }
+                            } catch (error) {
+                                // setCari(false);
+                                // setSpeaking(false);
+                                synth.speak(`Kelas tidak ditemukan`);
+                            }
+                        };
+                        fetchApi();
+                    }
+                } else if (level.includes('sulit')) {
+                    // console.log('my level', 'sulit');
+                    // console.log('my level', 'menengah');
+                    console.log('buat cari ', cleanCommand);
+                    // console.log('my level', 'mudah');
+                    if (token) {
+                        // synth.speak(speech(`Mencari ${command}`));
+                        const fetchApi = async () => {
+                            try {
+                                const response = await axios.get(`https://nurz.site/api/user/kelasByLevel/3`, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Authorization: `Bearer ${token}`,
+                                    },
+                                });
+
+                                console.log(response.data);
+
+                                if (!response.data.data.kelas.length) {
+                                    synth.speak(speech(`Kelas tidak ditemukan`));
+                                    // setCari(false);
+                                    return;
+                                }
+
+                                if (response.data.data.kelas.length > 0) {
+                                    setKelas(response.data.data.kelas);
+                                    synth.speak(speech('Ditemukan kelas dengan level mudah'));
+                                    for (let i = 0; i < response.data.data.kelas.length; i++) {
+                                        synth.speak(speech(`kelas ${response.data.data.kelas[i].name}`));
+                                    }
+                                    // setCari(false);
+                                }
+                            } catch (error) {
+                                // setCari(false);
+                                // setSpeaking(false);
+                                synth.speak(`Kelas tidak ditemukan`);
+                            }
+                        };
+                        fetchApi();
+                    }
+                }
+                console.log('test', level);
+            } else if (cleanCommand.includes('belajar')) {
+                const kelas = cleanCommand.replace('belajar', '').trim();
+                console.log('dapet', kelas);
+            } else if (cleanCommand.includes('mode cari')) {
+                let utterance = speech('Sedang dalam mode cari');
+
+                utterance.onend = () => {
+                    setCari(true);
+                };
+
+                synth.speak(utterance);
+            } else if (cleanCommand.includes('pergi home')) {
                 let utterance = speech('Anda akan pergi ke Beranda');
                 setSpeaking(true);
-                // dispatch(setListening(true));
+                recognition.stop();
                 utterance.onend = () => {
-                    // recognition.stop();
                     router.push('/');
                 };
+                synth.cancel();
                 synth.speak(utterance);
-            } else if (command.includes('pergi rapor')) {
-                recognition.stop();
+            } else if (cleanCommand.includes('pergi rapor')) {
                 let utterance = speech('Anda akan pergi ke Rapor');
                 setSpeaking(true);
-                // dispatch(setListening(true));
+                recognition.stop();
                 utterance.onend = () => {
-                    // recognition.stop();
                     router.push('/rapor');
                 };
+                synth.cancel();
                 synth.speak(utterance);
-            } else if (command.includes('sebutkan kelas')) {
+            } else if (cleanCommand.includes('sebutkan kelas')) {
                 if (kelas.length > 0) {
                     synth.cancel();
                     synth.speak(speech(`Daftar kelas yaitu : `));
@@ -114,22 +265,24 @@ const Kelas = () => {
                         synth.speak(speech(` ${kelas[i].name}`));
                     }
                 }
-            } else if (command.includes('jumlah kelas')) {
+            } else if (cleanCommand.includes('jumlah kelas')) {
                 if (kelas.length) {
                     synth.cancel();
                     synth.speak(speech(`Terdapat ${kelas.length} kelas.`));
                 }
             } else if (
-                command.includes('saya sekarang dimana') ||
-                command.includes('saya sekarang di mana') ||
-                command.includes('saya di mana') ||
-                command.includes('saya dimana')
+                cleanCommand.includes('saya sekarang dimana') ||
+                cleanCommand.includes('saya sekarang di mana') ||
+                cleanCommand.includes('saya di mana') ||
+                cleanCommand.includes('saya dimana')
             ) {
                 synth.cancel();
                 synth.speak(speech('Kita sedang di halaman kelas'));
             }
 
-            console.log(event.results[0][0].transcript.toLowerCase());
+            // console.log(cleanCommand.replace('belajar', '').trim());
+            // console.log(event.results[0][0].transcript.toLowerCase());
+            console.log(cleanCommand);
         };
 
         recognition.onend = () => {
@@ -137,7 +290,7 @@ const Kelas = () => {
                 recognition.start();
             }
         };
-    }, [router, kelas, speaking]);
+    }, [router, kelas, speaking, isCari, token]);
 
     return (
         <div className='h-screen bg-[#EDF3F3]'>
