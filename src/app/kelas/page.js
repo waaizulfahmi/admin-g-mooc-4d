@@ -110,7 +110,7 @@ const Kelas = () => {
             if (cleanCommand.includes('cari kelas')) {
                 const level = cleanCommand.replace('cari kelas', '').trim().toLowerCase();
                 if (level.includes('mudah')) {
-                    console.log('buat cari ', cleanCommand);
+                    // console.log('buat cari ', cleanCommand);
                     // console.log('my level', 'mudah');
                     if (token) {
                         // synth.speak(speech(`Mencari ${command}`));
@@ -149,7 +149,7 @@ const Kelas = () => {
                     }
                 } else if (level.includes('menengah')) {
                     // console.log('my level', 'menengah');
-                    console.log('buat cari ', cleanCommand);
+                    // console.log('buat cari ', cleanCommand);
                     // console.log('my level', 'mudah');
                     if (token) {
                         // synth.speak(speech(`Mencari ${command}`));
@@ -189,7 +189,7 @@ const Kelas = () => {
                 } else if (level.includes('sulit')) {
                     // console.log('my level', 'sulit');
                     // console.log('my level', 'menengah');
-                    console.log('buat cari ', cleanCommand);
+                    // console.log('buat cari ', cleanCommand);
                     // console.log('my level', 'mudah');
                     if (token) {
                         // synth.speak(speech(`Mencari ${command}`));
@@ -227,7 +227,7 @@ const Kelas = () => {
                         fetchApi();
                     }
                 }
-                console.log('test', level);
+                // console.log('test', level);
             } else if (cleanCommand.includes('belajar')) {
                 const kelas = cleanCommand.replace('belajar', '').trim();
                 console.log('dapet', kelas);
@@ -280,8 +280,6 @@ const Kelas = () => {
                 synth.speak(speech('Kita sedang di halaman kelas'));
             }
 
-            // console.log(cleanCommand.replace('belajar', '').trim());
-            // console.log(event.results[0][0].transcript.toLowerCase());
             console.log(cleanCommand);
         };
 
