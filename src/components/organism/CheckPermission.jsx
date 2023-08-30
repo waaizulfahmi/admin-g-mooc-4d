@@ -36,6 +36,7 @@ const CheckPermission = () => {
 
                 utterance.onend = () => {
                     setStatusBtn(true);
+                    dispatch(setIsPermit(!isPermit));
                 };
 
                 synth.speak(utterance);
@@ -44,7 +45,7 @@ const CheckPermission = () => {
         document.addEventListener('keydown', detectKeyDown);
 
         return () => window.removeEventListener('keydown', detectKeyDown);
-    }, []);
+    }, [dispatch, isPermit, setIsPermit]);
 
     useEffect(() => {
         if (micprohoneStatus === 'denied') {
@@ -98,7 +99,7 @@ const CheckPermission = () => {
                                     </p>
                                     <FillButton
                                         disabled={!status}
-                                        onClick={() => dispatch(setIsPermit(!isPermit))}
+                                        // onClick={() => dispatch(setIsPermit(!isPermit))}
                                         className={`${
                                             status ? ' opacity-100' : ' opacity-50'
                                         } bg-color-1 border-color-1 rounded-rad-3 border px-5 py-2  text-[20px] font-semibold text-white`}>
