@@ -30,6 +30,7 @@ function PilihKelas() {
     const token = data?.user?.token;
     const [speaking, setSpeaking] = useState(false);
     const [loadData, setLoadData] = useState(true);
+    const [playback, setPlayback] = useState(10)
 
     // console.log('name', name);
     // console.log('token', token);
@@ -41,14 +42,7 @@ function PilihKelas() {
     const [materi, setMateri] = useState([]);
     const [quiz, setQuiz] = useState([]);
     const [videoId, setVideoId] = useState('');
-    // const [history, setHistory] = useState([]);
-
-    // console.log(materi);
-    // console.log(quiz);
-
     const router = useRouter();
-
-    // const handlePlayVideo = () => setVideoPlaying(!isVideoPlaying);
 
     const backToClass = () => {
         router.back();
@@ -82,7 +76,8 @@ function PilihKelas() {
                         const lastMateri = activeMateri[activeMateri.length - 1];
 
                         console.log('Materi : ', materi);
-
+                        console.log('Last Materi : ', lastMateri);
+                        setPlayback(lastMateri.playback)
                         setVideoId(getYoutubeVideoId(lastMateri.url));
                         setMateri(materi);
                         setQuiz(quiz);
@@ -99,34 +94,7 @@ function PilihKelas() {
             }
         }
         setLoadData(false);
-        // if (token) {
-        //     const fetchApi = async () => {
-        //         try {
-        //             const response = await axios.get(`https://nurz.site/api/user/enrollment/${name}`, {
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                     Authorization: `Bearer ${token}`,
-        //                 },
-        //             });
-        //             const materi = response.data.data.kelas.materi;
-        //             const quiz = response.data.data.kelas.quiz;
-        //             const activeMateri = response.data.data.kelas.materi.filter((materiItem) => materiItem.status === 'jalan');
-        //             const lastMateri = activeMateri[activeMateri.length - 1];
-        //             console.log('Materi : ', materi);
-        //             setVideoId(getYoutubeVideoId(lastMateri.url));
-        //             setMateri(materi);
-        //             setQuiz(quiz);
-        //             synth.speak(
-        //                 speech(
-        //                     `Selamat datang di Kelas ${response.data.data.kelas.name}.\nDitemukan ${materi.length} materi, dan ${quiz.length} quiz.`,
-        //                 ),
-        //             );
-        //         } catch (error) {
-        //             console.log(error);
-        //         }
-        //     };
-        //     fetchApi();
-        // }
+
     }, [token, name, loadData]);
 
     useEffect(() => {
@@ -134,18 +102,37 @@ function PilihKelas() {
             const command = event.results[0][0].transcript.toLowerCase();
             const cleanCommand = command?.replace('.', '');
 
-            if (cleanCommand.includes('putar video')) {
+            if (cleanCommand.includes('pergi')) {
+                if (cleanCommand.includes('kelas')) {
+                    recognition.stop();
+                    let utterance = speech('Anda akan menuju halaman Daftar Kelas');
+                    utterance.onend = () => {
+                        recognition.stop();
+                        router.push('/kelas');
+                    };
+                    synth.speak(utterance);
+                } else if (cleanCommand.includes('rapor')) {
+                    recognition.stop();
+                    let utterance = speech('Anda akan menuju halaman Rapor');
+                    utterance.onend = () => {
+                        recognition.stop();
+                        router.push('/rapor');
+                    };
+                    synth.speak(utterance);
+                } else if (cleanCommand.includes('beranda')) {
+                    recognition.stop();
+                    let utterance = speech('Anda akan menuju halaman beranda');
+                    utterance.onend = () => {
+                        recognition.stop();
+                        router.push('/test');
+                    };  
+                    synth.speak(utterance);
+                }
+            } else if (cleanCommand.includes('putar video')) {
                 let utterance = speech(`Anda akan memutar video`);
 
                 utterance.onend = () => {
-                    // router.push(`/kelas/${findKelas.name.toLowerCase()}`);
-                    // setLoadData();
                     setVideoPlaying(true);
-                    // window.focus();
-
-                    // videoRef.current.click();
-                    // videoRef.current.click();
-                    // document.addEventListener('click',()=>)
                 };
 
                 synth.speak(utterance);
@@ -153,7 +140,6 @@ function PilihKelas() {
                 let utterance = speech(`Anda akan load halaman`);
 
                 utterance.onend = () => {
-                    // router.push(`/kelas/${findKelas.name.toLowerCase()}`);
                     setLoadData(true);
                 };
 
@@ -171,96 +157,13 @@ function PilihKelas() {
         };
 
         recognition.onend = () => {
-            if (!speaking) {
-                recognition.start();
-            }
+            recognition.start();
         };
     }, [speaking]);
 
     console.log('video runn', currenTime);
     console.log('video pause', isVideoPaused);
     console.log('video playing', isVideoPlaying);
-
-    // useEffect(() => {
-    //     if (token) {
-    //         const fetchApi = async () => {
-    //             try {
-    //                 const response = await getClassById({ id, token });
-    //                 const responseHistory = await getOrCreateHistory({ id_kelas: response.data.id_kelas, token: token });
-    //                 const materi = response.data.materi;
-    //                 const quiz = response.data.quiz;
-    //                 const history = responseHistory.data.history;
-
-    //                 // console.log(materi);
-    //                 setMateri(materi);
-    //                 setQuiz(quiz);
-
-    //                 console.log('history', responseHistory.data.history);
-    //             } catch (error) {
-    //                 console.log(error);
-    //             }
-    //         };
-    //         fetchApi();
-    //     }
-    // }, [id, token]);
-
-    const ex_materi = [
-        {
-            id_materi: 1,
-            name: 'Javascrypt pendahuluan',
-            materi: 'Saat ini, pasti Anda sering mendengar Javascript yang kedengarannya menarik tetapi Anda tidak mengetahui apa sih sebenarnya Javascript itu dan bagaimana cara kerjanya. Jika anda ingin menjadi seorang developer, maka tidak heran anda akan menggunakan javascript ini.\n\nBiasanya para developer menggunakan javascript untuk membantu memudahkan pekerjaan mereka, dan membuat pengotomatisan dalam beberapa jenis pemrograman. Kalian tidak perlu khawatir dam bingung karena pada artikel kali ini, Kami akan membahas tentang Javascript beserta cara kerjanya.',
-            url: 'youtube.com',
-            created_at: '2023-08-15T07:02:30.000000Z',
-            updated_at: '2023-08-15T07:02:30.000000Z',
-        },
-        {
-            id_materi: 2,
-            name: 'Pengenalan Javascrypt',
-            materi: 'JavaScript adalah suatu bahasa pemrograman tingkat tinggi dan dinamis. JavaScript populer di internet dan dapat bekerja di sebagian besar penjelajah web populer seperti Google Chrome, Internet Explorer, Mozilla Firefox, Netscape dan Opera. Kode JavaScript dapat disisipkan dalam halaman web menggunakan tag script.',
-            url: 'https://www.youtube.com/embed/upDLs1sn7g4',
-            created_at: '2023-08-21T07:19:06.000000Z',
-            updated_at: '2023-08-21T07:19:06.000000Z',
-        },
-    ];
-
-    const ex_quiz = {
-        id_quiz: 1,
-        question: 'apa pemrogaman yang memanipulasi html?',
-        true_answer: 'A',
-        created_at: null,
-        updated_at: null,
-        deleted_at: null,
-        answer: [
-            {
-                id_answer: 1,
-                kunci: 'A',
-                option: 'Javascrypt',
-                created_at: null,
-                updated_at: null,
-            },
-            {
-                id_answer: 2,
-                kunci: 'B',
-                option: 'PHP',
-                created_at: null,
-                updated_at: null,
-            },
-            {
-                id_answer: 3,
-                kunci: 'C',
-                option: 'Java',
-                created_at: null,
-                updated_at: null,
-            },
-            {
-                id_answer: 4,
-                kunci: 'D',
-                option: 'Python',
-                created_at: null,
-                updated_at: null,
-            },
-        ],
-    };
 
     return (
         <div className='h-screen bg-[#EDF3F3]'>
@@ -300,11 +203,10 @@ function PilihKelas() {
                                             // ref={item.status === 'jalan' ? videoRef : null}
                                             // onClick={item.status === 'jalan' ? handlePlayVideo : undefined}
                                             key={index}
-                                            className={`${
-                                                item.status === 'sudah' || item.status === 'jalan'
-                                                    ? 'bg-[#CF8618] text-white'
-                                                    : 'bg-white text-[#CF8618]'
-                                            }  flex items-center gap-[8px] rounded-[10px]  p-[20px] font-bold  `}>
+                                            className={`${item.status === 'sudah' || item.status === 'jalan'
+                                                ? 'bg-[#CF8618] text-white'
+                                                : 'bg-white text-[#CF8618]'
+                                                }  flex items-center gap-[8px] rounded-[10px]  p-[20px] font-bold  `}>
                                             <MdPlayCircleOutline className='h-[20px] w-[20px]' /> <span>Video 2</span>
                                         </div>
                                     );
@@ -327,6 +229,7 @@ function PilihKelas() {
                     </div> */}
                     {videoId && (
                         <VideoFrame
+                            playback={playback}
                             setCurrenTimeVideo={setCurrenTime}
                             videoId={videoId}
                             isPlaying={isVideoPlaying}

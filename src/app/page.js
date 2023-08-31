@@ -21,7 +21,6 @@ const Beranda = () => {
     const router = useRouter();
     const { data } = useSession();
     const user = data?.user.name;
-    const [speaking, setSpeaking] = useState(false);
 
     useEffect(() => {
         try {
@@ -40,59 +39,56 @@ const Beranda = () => {
     useEffect(() => {
         recognition.onresult = (event) => {
             const command = event.results[0][0].transcript.toLowerCase();
+            const cleanCommand = command?.replace('.', '');
 
-            if (command.includes('pergi kelas')) {
-                recognition.stop();
-                let utterance = speech('Anda akan pergi ke Daftar Kelas');
-                setSpeaking(true);
-                utterance.onend = () => {
+            if (cleanCommand.includes('pergi')) {
+                if (cleanCommand.includes('kelas')) {
                     recognition.stop();
-                    router.push('/kelas');
-                };
-                synth.speak(utterance);
-            } else if (command.includes('pergi rapor')) {
-                recognition.stop();
-                let utterance = speech('Anda akan pergi ke Rapor');
-                setSpeaking(true);
-                utterance.onend = () => {
+                    let utterance = speech('Anda akan menuju halaman Daftar Kelas');
+                    utterance.onend = () => {
+                        recognition.stop();
+                        router.push('/kelas');
+                    };
+                    synth.speak(utterance);
+                } else if (cleanCommand.includes('rapor')) {
                     recognition.stop();
-                    router.push('/rapor');
-                };
-                synth.speak(utterance);
-            } else if (command.includes('pergi tes')) {
-                recognition.stop();
-                let utterance = speech('Anda akan pergi ke test');
-                setSpeaking(true);
-                utterance.onend = () => {
+                    let utterance = speech('Anda akan menuju halaman Rapor');
+                    utterance.onend = () => {
+                        recognition.stop();
+                        router.push('/rapor');
+                    };
+                    synth.speak(utterance);
+                } else if (cleanCommand.includes('tes')) {
                     recognition.stop();
-                    router.push('/test');
-                };
-                synth.speak(utterance);
+                    let utterance = speech('Anda akan menuju halaman test');
+                    utterance.onend = () => {
+                        recognition.stop();
+                        router.push('/test');
+                    };
+                    synth.speak(utterance);
+                }
             } else if (
-                command.includes('saya sekarang dimana') ||
-                command.includes('saya sekarang di mana') ||
-                command.includes('saya di mana') ||
-                command.includes('saya dimana')
+                cleanCommand.includes('saya sekarang dimana') ||
+                cleanCommand.includes('saya sekarang di mana') ||
+                cleanCommand.includes('saya di mana') ||
+                cleanCommand.includes('saya dimana')
             ) {
-                synth.cancel();
                 synth.speak(speech('Kita sedang di halaman utama'));
             }
 
-            console.log(event.results[0][0].transcript.toLowerCase());
+            console.log(cleanCommand)
         };
 
         recognition.onend = () => {
-            if (!speaking) {
-                recognition.start();
-            }
+            recognition.start();
         };
-    }, [router, speaking]);
+    }, [router]);
 
     return (
         <>
             <Navbar />
             <Hero />
-            <CheckPermission />
+            {/* <CheckPermission /> */}
         </>
     );
 };

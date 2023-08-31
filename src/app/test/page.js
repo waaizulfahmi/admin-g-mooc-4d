@@ -11,7 +11,11 @@ const Test = () => {
     const router = useRouter();
 
     useEffect(() => {
-        recognition.start();
+        try {
+            recognition.start();
+        } catch (error) {
+            recognition.stop();
+        }
     }, []);
 
     useEffect(() => {
@@ -62,9 +66,7 @@ const Test = () => {
         };
 
         recognition.onend = () => {
-            if (!speaking) {
-                recognition.start();
-            }
+            recognition.start();
         };
     }, [router, speaking]);
 

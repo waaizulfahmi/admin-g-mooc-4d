@@ -1,17 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import YouTubePlayer from 'youtube-player';
+import { synth, speech } from '@/utils/textToSpeech';
 
-const VideoFrame = ({ playback = 200, videoId, isPlaying, setPaused, setPlaying, setVideoEnded, setCurrenTimeVideo }) => {
+const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, setCurrenTimeVideo }) => {
     const playerRef = useRef(null);
-    const lastPlayedTimeRef = useRef(0);
-    // const [playback, setPlayback] = useState(0);
-
-    // const getLastPlayedTime = () => {
-    //     const lastTime = localStorage.getItem(`lastPlayedTime_${videoId}`);
-    //     return lastTime ? parseFloat(lastTime) : 0;
-    // };
+   
     const handleVideoSize = async (player) => {
         try {
             const size = await player.getDuration();
@@ -25,7 +20,6 @@ const VideoFrame = ({ playback = 200, videoId, isPlaying, setPaused, setPlaying,
         const player = YouTubePlayer('player', {
             videoId: videoId,
             playerVars: {
-                // autoplay: isPlaying ? 1 : 0,
                 autoplay: 0,
                 controls: 1,
                 modestbranding: 1,
@@ -35,48 +29,37 @@ const VideoFrame = ({ playback = 200, videoId, isPlaying, setPaused, setPlaying,
             },
         });
 
-        // isPlaying ? player.playVideo() : player.pauseVideo();
+       
 
         playerRef.current = player;
 
         // Ambil waktu terakhir dari localStorage untuk video saat ini
-        // lastPlayedTimeRef.current = getLastPlayedTime();
-        // player.seekTo(lastPlayedTimeRef.current);
 
-        if (startTime >= playback) {
-            player.seekTo(startTime);
-        } else {
+        if ( playback > 0) {
+            // player.seekTo(startTime);
             player.seekTo(playback);
-        }
+            player.pauseVideo();
+        } 
 
         // Ketika video diputar, simpan waktu saat video dimulai
         player.on('stateChange', async (event) => {
             if (event.data === 1 || event.data === 2) {
                 const currentTime = await player.getCurrentTime();
                 console.log('cur', currentTime);
-                // lastPlayedTimeRef.current = currentTime; // Update played time
-                // localStorage.setItem(`lastPlayedTime_${videoId}`, currentTime);
                 setCurrenTimeVideo(currentTime);
                 return;
             }
 
             if (event.data === 0) {
+                synth.speak(speech('Video sudah selesai'));
                 setVideoEnded(true);
                 console.log('Video selesai');
             }
         });
-        console.log('====================================');
+        
 
         handleVideoSize(player);
-        // player.stopVideo().then(() => {
-        //     // Every function returns a promise that is resolved after the target function has been executed.
-
-        //     console.log("SUdah selesai");
-        // });
-
-        // player.nextVideo().then
-
-        console.log('====================================');
+        
     };
 
     useEffect(() => {
@@ -91,7 +74,13 @@ const VideoFrame = ({ playback = 200, videoId, isPlaying, setPaused, setPlaying,
                 handlePause();
             }
         };
-        // playerRef.current.playVideo();
+
+        // if (playback > 0) {
+        //     if (isReadyToPlay) {
+        //          playerRef.current.seekTo(playback);
+        //     }
+        // }
+        
 
         document.addEventListener('keydown', handleKeyDown);
 
@@ -113,16 +102,14 @@ const VideoFrame = ({ playback = 200, videoId, isPlaying, setPaused, setPlaying,
         if (playerRef.current) {
             playerRef.current.pauseVideo();
             setPaused(true);
-            // setPlaying(false);
         }
     };
 
     const handlePlay = () => {
         if (playerRef.current) {
             playerRef.current.playVideo();
-            // playerRef.current.seekTo(playback);
             setPaused(false);
-            // setPlaying(true);
+            
         }
     };
 

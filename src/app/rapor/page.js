@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 // components
 import Navbar from '@/components/organism/Navbar';
@@ -10,6 +11,7 @@ import FillButton from '@/components/atoms/FillButton';
 
 import { synth, speech } from '@/utils/textToSpeech';
 import recognition from '@/utils/speechRecognition';
+import axios from 'axios';
 
 // import { useSelector, useDispatch } from 'react-redux';
 // import { getListening, speechRecognitionSlice } from '@/redux/speech-recognition';
@@ -17,6 +19,30 @@ import recognition from '@/utils/speechRecognition';
 const Rapor = () => {
     const [speaking, setSpeaking] = useState(false);
     const router = useRouter();
+    const { data } = useSession()
+    const token = data?.user?.token
+
+    useEffect(() => {
+        if (token) {
+            const fetchApi = async () => {
+                try {
+                    const response = await axios.get(`https://nurz.site/api/user/rapor`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    console.log(response.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            fetchApi();
+        }
+    }, [token])
+
+
 
     useEffect(() => {
         try {
@@ -24,7 +50,6 @@ const Rapor = () => {
         } catch (error) {
             recognition.stop();
         }
-        // recognition.start();
     }, []);
 
     useEffect(() => {
@@ -71,9 +96,10 @@ const Rapor = () => {
             console.log(event.results[0][0].transcript.toLowerCase());
         };
         recognition.onend = () => {
-            if (!speaking) {
-                recognition.start();
-            }
+            // if (!speaking) {
+            //     recognition.start();
+            // }
+            recognition.start();
         };
     }, [speaking, router]);
 
