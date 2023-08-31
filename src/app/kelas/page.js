@@ -32,6 +32,7 @@ const Kelas = () => {
     const [kelas, setKelas] = useState([]);
     const [isCari, setCari] = useState(false);
     const [isLevel, setLevel] = useState(false);
+
     // const [listening, setListening] = useState(false);
 
     const handlePilihKelas = (idKelas) => {
@@ -110,8 +111,6 @@ const Kelas = () => {
             if (cleanCommand.includes('cari kelas')) {
                 const level = cleanCommand.replace('cari kelas', '').trim().toLowerCase();
                 if (level.includes('mudah')) {
-                    // console.log('buat cari ', cleanCommand);
-                    // console.log('my level', 'mudah');
                     if (token) {
                         // synth.speak(speech(`Mencari ${command}`));
                         const fetchApi = async () => {
@@ -148,9 +147,6 @@ const Kelas = () => {
                         fetchApi();
                     }
                 } else if (level.includes('menengah')) {
-                    // console.log('my level', 'menengah');
-                    // console.log('buat cari ', cleanCommand);
-                    // console.log('my level', 'mudah');
                     if (token) {
                         // synth.speak(speech(`Mencari ${command}`));
                         const fetchApi = async () => {
@@ -187,10 +183,6 @@ const Kelas = () => {
                         fetchApi();
                     }
                 } else if (level.includes('sulit')) {
-                    // console.log('my level', 'sulit');
-                    // console.log('my level', 'menengah');
-                    // console.log('buat cari ', cleanCommand);
-                    // console.log('my level', 'mudah');
                     if (token) {
                         // synth.speak(speech(`Mencari ${command}`));
                         const fetchApi = async () => {
@@ -229,8 +221,21 @@ const Kelas = () => {
                 }
                 // console.log('test', level);
             } else if (cleanCommand.includes('belajar')) {
-                const kelas = cleanCommand.replace('belajar', '').trim();
-                console.log('dapet', kelas);
+                setSpeaking(true);
+                recognition.stop();
+                const kelass = cleanCommand.replace('belajar', '').trim();
+                const findKelas = kelas.find((k) => k.name.toLowerCase() === kelass);
+                if (!findKelas) {
+                    synth.speak(speech('Kelas tidak ditemukan!'));
+                    return;
+                }
+                let utterance = speech(`Anda akan belajar ${findKelas.name}`);
+
+                utterance.onend = () => {
+                    router.push(`/kelas/${findKelas.name.toLowerCase()}`);
+                };
+
+                synth.speak(utterance);
             } else if (cleanCommand.includes('mode cari')) {
                 let utterance = speech('Sedang dalam mode cari');
 
@@ -294,7 +299,7 @@ const Kelas = () => {
         <div className='h-screen bg-[#EDF3F3]'>
             <Navbar />
             <main style={{ height: 'calc(100vh - 90px)' }} className='w-screen bg-[#EDF3F3] pt-[90px] '>
-                <div className='mx-auto grid max-w-screen-xl grid-cols-12'>
+                <div className='grid max-w-screen-xl grid-cols-12 mx-auto'>
                     <div className='col-span-3 '>
                         <h1 className='text-[30px] font-bold leading-[30px]'>Sort</h1>
                         <div className='mt-[30px] flex flex-col gap-[18px] '>

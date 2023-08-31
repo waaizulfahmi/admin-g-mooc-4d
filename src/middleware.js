@@ -4,7 +4,9 @@ export const config = {
     matcher: [
         '/',
         '/kelas',
-        // "/akun/:path*",
+        '/kelas/:path*',
+        '/rapor',
+        '/rapor/:path*',
         // '/reset-password/:path/:path',
         // "/history/:path*",
         // "/notifikasi/:path*",
