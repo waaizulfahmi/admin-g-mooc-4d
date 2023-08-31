@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import YouTubePlayer from 'youtube-player';
 import { synth, speech } from '@/utils/textToSpeech';
 
-const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, setCurrenTimeVideo }) => {
+const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, setCurrenTimeVideo , handleEditMateri}) => {
     const playerRef = useRef(null);
    
     const handleVideoSize = async (player) => {
@@ -16,7 +16,7 @@ const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, se
         }
     };
 
-    const handleInitialPlay = (startTime = 1) => {
+    const handleInitialPlay = () => {
         const player = YouTubePlayer('player', {
             videoId: videoId,
             playerVars: {
@@ -29,29 +29,29 @@ const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, se
             },
         });
 
-       
-
         playerRef.current = player;
 
         // Ambil waktu terakhir dari localStorage untuk video saat ini
-
         if ( playback > 0) {
-            // player.seekTo(startTime);
             player.seekTo(playback);
             player.pauseVideo();
         } 
 
         // Ketika video diputar, simpan waktu saat video dimulai
         player.on('stateChange', async (event) => {
-            if (event.data === 1 || event.data === 2) {
+            if (event.data === 2) {
                 const currentTime = await player.getCurrentTime();
+                // synth.speak(speech('Anda pause video'));
                 console.log('cur', currentTime);
+                handleEditMateri(currentTime, 2)
                 setCurrenTimeVideo(currentTime);
                 return;
             }
 
             if (event.data === 0) {
+                const currentTime = await player.getCurrentTime();
                 synth.speak(speech('Video sudah selesai'));
+                handleEditMateri(currentTime, 1)
                 setVideoEnded(true);
                 console.log('Video selesai');
             }
@@ -75,13 +75,6 @@ const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, se
             }
         };
 
-        // if (playback > 0) {
-        //     if (isReadyToPlay) {
-        //          playerRef.current.seekTo(playback);
-        //     }
-        // }
-        
-
         document.addEventListener('keydown', handleKeyDown);
 
         // hapus event listener saat komponen VideoFrame di-unmount
@@ -92,10 +85,8 @@ const VideoFrame = ({ playback, videoId, isPlaying, setPaused, setVideoEnded, se
                 playerRef.current.destroy();
             }
 
-            // unmount, simpan waktu terakhir untuk video saat ini
-            // localStorage.setItem(`lastPlayedTime_${videoId}`, lastPlayedTimeRef.current.toString());
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+   
     }, [videoId, isPlaying]);
 
     const handlePause = () => {

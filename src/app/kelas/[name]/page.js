@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+
 // third party
 import { useSession } from 'next-auth/react';
 
@@ -23,8 +24,11 @@ import axios from 'axios';
 import { synth, speech } from '@/utils/textToSpeech';
 import { getYoutubeVideoId } from '@/utils/getVideoId';
 
+
+
+
 function PilihKelas() {
-    // const videoRef = useRef(null);
+
     const { data } = useSession();
     const { name } = useParams();
     const token = data?.user?.token;
@@ -32,14 +36,13 @@ function PilihKelas() {
     const [loadData, setLoadData] = useState(true);
     const [playback, setPlayback] = useState(10)
 
-    // console.log('name', name);
-    // console.log('token', token);
     const [isVideoEnded, setVideoEnded] = useState(false);
     const [isVideoPlaying, setVideoPlaying] = useState(false);
     const [isVideoPaused, setVideoPaused] = useState(false);
     const [currenTime, setCurrenTime] = useState(0);
 
     const [materi, setMateri] = useState([]);
+    const [currentMateri, setCurrentMateri] = useState({})
     const [quiz, setQuiz] = useState([]);
     const [videoId, setVideoId] = useState('');
     const router = useRouter();
@@ -47,6 +50,72 @@ function PilihKelas() {
     const backToClass = () => {
         router.back();
     };
+
+    const handleEditMateri = (curr,statusCode) =>{
+        // console.log('datas', curr);
+        const statusVideo = {
+            1:'selesai',
+            2:'pause'
+        }
+    const dataUpdate = {
+    id_materi: currentMateri.id_materi,
+    playback: curr
+        }   
+
+        if (statusVideo[statusCode] === 'selesai') {
+            const updateVideoMateri = async()=>{
+                try {
+                    const response = await axios.put(
+                        `https://nurz.site/api/user/enrollment/update/${dataUpdate.id_materi}`, 
+                            {
+                                "playback": dataUpdate.playback,
+                                'status':'selesai'
+                                // jika selesai kirim data selesai
+                               
+                        } ,{
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    )
+                    console.log('success update materi', response.data);
+                    setLoadData(true)
+                } catch (error) {
+                    console.log('ERROR', error);
+                }
+            }
+            updateVideoMateri()
+            console.log('data',dataUpdate, `dengan status SELESAI`);
+        }else if(statusVideo[statusCode] === 'pause') {
+            const updateVideoMateri = async()=>{
+                try {
+                    const response = await axios.put(
+                        `https://nurz.site/api/user/enrollment/update/${dataUpdate.id_materi}`, 
+                            {
+                                "playback": dataUpdate.playback,
+                                // jika selesai kirim data selesai
+                               
+                        } ,{
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    )
+                    console.log('success update materi', response.data);
+                } catch (error) {
+                    console.log('ERROR', error);
+                }
+            }
+            updateVideoMateri()
+            console.log('data',dataUpdate, `dengan status UPDATE`);
+        }
+
+        
+
+     
+    }
 
     useEffect(() => {
         try {
@@ -58,7 +127,6 @@ function PilihKelas() {
 
     useEffect(() => {
         if (loadData) {
-            if (token) {
                 const fetchApi = async () => {
                     try {
                         const response = await axios.get(`https://nurz.site/api/user/enrollment/${name}`, {
@@ -70,15 +138,25 @@ function PilihKelas() {
 
                         const materi = response.data.data.kelas.materi;
                         const quiz = response.data.data.kelas.quiz;
-                        const activeMateri = response.data.data.kelas.materi.filter(
+                        const materiLength = materi.length
+
+                        const activeMateri = response.data.data.kelas.materi.find(
                             (materiItem) => materiItem.status === 'jalan',
                         );
-                        const lastMateri = activeMateri[activeMateri.length - 1];
 
-                        console.log('Materi : ', materi);
-                        console.log('Last Materi : ', lastMateri);
-                        setPlayback(lastMateri.playback)
-                        setVideoId(getYoutubeVideoId(lastMateri.url));
+                        if (activeMateri) {
+                            setCurrentMateri(activeMateri)
+                        setPlayback(activeMateri.playback)
+                        setVideoId(getYoutubeVideoId(activeMateri.url));
+                        }else{
+                        setCurrentMateri(materi[materi.length - 1])
+                        setPlayback(materi[materi.length - 1].playback)
+                        setVideoId(getYoutubeVideoId(materi[materi.length - 1].url));
+                        }
+
+
+                       
+                        
                         setMateri(materi);
                         setQuiz(quiz);
                         synth.speak(
@@ -91,11 +169,10 @@ function PilihKelas() {
                     }
                 };
                 fetchApi();
-            }
         }
         setLoadData(false);
 
-    }, [token, name, loadData]);
+    }, [ name, loadData]);
 
     useEffect(() => {
         recognition.onresult = (event) => {
@@ -105,6 +182,7 @@ function PilihKelas() {
             if (cleanCommand.includes('pergi')) {
                 if (cleanCommand.includes('kelas')) {
                     recognition.stop();
+                    // synth.cancel();
                     let utterance = speech('Anda akan menuju halaman Daftar Kelas');
                     utterance.onend = () => {
                         recognition.stop();
@@ -161,9 +239,9 @@ function PilihKelas() {
         };
     }, [speaking]);
 
-    console.log('video runn', currenTime);
-    console.log('video pause', isVideoPaused);
-    console.log('video playing', isVideoPlaying);
+    // console.log('video runn', currenTime);
+    // console.log('video pause', isVideoPaused);
+    // console.log('video playing', isVideoPlaying);
 
     return (
         <div className='h-screen bg-[#EDF3F3]'>
@@ -203,11 +281,11 @@ function PilihKelas() {
                                             // ref={item.status === 'jalan' ? videoRef : null}
                                             // onClick={item.status === 'jalan' ? handlePlayVideo : undefined}
                                             key={index}
-                                            className={`${item.status === 'sudah' || item.status === 'jalan'
+                                            className={`${item.status === 'selesai' || item.status === 'jalan'
                                                 ? 'bg-[#CF8618] text-white'
                                                 : 'bg-white text-[#CF8618]'
                                                 }  flex items-center gap-[8px] rounded-[10px]  p-[20px] font-bold  `}>
-                                            <MdPlayCircleOutline className='h-[20px] w-[20px]' /> <span>Video 2</span>
+                                            <MdPlayCircleOutline className='h-[20px] w-[20px]' /> <span>Video {index + 1}</span>
                                         </div>
                                     );
                                 })}
@@ -229,6 +307,7 @@ function PilihKelas() {
                     </div> */}
                     {videoId && (
                         <VideoFrame
+                            handleEditMateri={handleEditMateri}
                             playback={playback}
                             setCurrenTimeVideo={setCurrenTime}
                             videoId={videoId}
