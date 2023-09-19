@@ -7,16 +7,25 @@ import Image from 'next/image';
 import { navAdmin, customNavAdminIcon } from '@/data/nav-path';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
-import admin, { getActiveMenuId, adminSlice } from '@/redux/admin';
+import { getActiveMenuId, adminSlice } from '@/redux/admin';
 import { MdDeleteOutline, MdModeEdit, MdSearch } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
-import { adminDeleteQuizApi, adminGetAllLevelKelasApi, adminGetClassByLevel, adminGetQuizByKelas } from '@/axios/admin';
+import {
+    adminDeleteClassApi,
+    adminDeleteMateriApi,
+    adminGetAllClassApi,
+    adminGetAllLevelKelasApi,
+    adminGetClassByLevel,
+} from '@/axios/admin';
+import { getImageFile } from '@/utils/getServerStorage';
+import { formatDotString } from '@/utils/formatDot';
+import { getClassByLevel } from '@/axios/user';
 import Link from 'next/link';
 
-const Quiz = () => {
+const Materi = () => {
     const [notif, setNotif] = useState(false);
 
     const { setActiveMenuId } = adminSlice.actions;
@@ -26,36 +35,30 @@ const Quiz = () => {
     const token = data?.user?.token;
     const router = useRouter();
 
+    const [classes, setClasses] = useState([]);
+    const [materi, setMateri] = useState([]);
     const [catClass, setCatClass] = useState([]);
     const [idLevel, setIdLevel] = useState(1);
-    const [classes, setClasses] = useState([]);
     const [loadData, setLoadData] = useState(false);
-    const [quiz, setQuiz] = useState([]);
-    const [idQuiz, setIdQuiz] = useState();
+    const [idMateri, setIdMateri] = useState(0);
 
-    const handleNotif = () => setNotif(!notif);
-
-    function getNamaKelasByID(id_kelas) {
-        const kelas = classes.find((kelas) => kelas.id_kelas === id_kelas);
-        return kelas.name;
-    }
+    // console.log(token);
 
     useEffect(() => {
         if (token) {
             adminGetAllLevelKelasApi({ token }).then((res) => {
                 setCatClass(res.data);
-                // console.log(res);
             });
+
             adminGetClassByLevel({ id: idLevel, token }).then((res) => {
-                setClasses(res.data.kelas);
-
-                // Mengambil semua data kelas
-                const allKelas = res.data.kelas;
-                // Mengambil semua quiz dari semua kelas
-                const allQuiz = allKelas.map((kelas) => kelas.quiz).flat();
-
-                setQuiz(allQuiz);
+                const resClass = res.data.kelas;
+                setClasses(resClass);
+                const allMateri = resClass.reduce((acc, kelas) => {
+                    return [...acc, ...kelas.materi];
+                }, []);
+                setMateri(allMateri);
             });
+
             if (loadData) {
                 adminGetClassByLevel({ id: idLevel, token }).then((res) => {
                     setClasses(res.data.kelas);
@@ -65,15 +68,23 @@ const Quiz = () => {
         }
     }, [idLevel, token, loadData]);
 
+    // console.log(materi);
+    // console.log(classes);
+
     const handleDelete = (id) => {
-        adminDeleteQuizApi({ id_quiz: id, token }).then((res) => {
-            // console.log(res);
-            setLoadData(true);
+        adminDeleteMateriApi({ token, id_materi: id }).then((res) => {
+            // Filter data yang telah dihapus
+            if (res.metadata.status === 'success') {
+                // setClasses((prevClasses) => prevClasses.filter((cls) => cls.id !== id));
+                setLoadData(true);
+            }
         });
     };
 
+    const handleNotif = () => setNotif(!notif);
+
     return (
-        <section className='grid h-screen  w-screen grid-cols-12 bg-primary-1 py-[20px]'>
+        <section className='grid h-screen  w-screen grid-cols-12 overflow-y-hidden bg-primary-1 py-[20px]'>
             <div className='relative col-span-2 mx-[40px] '>
                 <Image alt='' src={'/images/icon-white.svg'} width={131} height={60} />
                 <ul className='mt-[60px] flex flex-col  gap-6'>
@@ -112,17 +123,17 @@ const Quiz = () => {
                     <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin')}>
                         Admin
                     </span>{' '}
-                    <span className='font-bold'>{'>'}</span> <span> List Quiz</span>
+                    <span className='font-bold'>{'>'}</span> <span> List Materi</span>
                 </div>
                 <div className='mr-[40px] mt-[10px]'>
                     <div className='flex items-center justify-between '>
                         <div>
-                            <h1 className=' text-[30px] font-bold '>List Quiz</h1>
-                            <h3 className='text-[16px]'>Pilih Level Kelas</h3>
+                            <h1 className=' text-[30px] font-bold '>List Materi</h1>
+                            <h1>Pilih Level Kelas</h1>
                         </div>
                         <div className='flex items-center gap-4'>
                             <FillButton
-                                onClick={() => router.push('/admin/quiz/tambah')}
+                                onClick={() => router.push('/admin/materi/tambah')}
                                 className='flex items-center gap-2 rounded-rad-5 px-[30px] py-[10px]'>
                                 <AiOutlinePlus /> Tambah Data
                             </FillButton>
@@ -146,6 +157,7 @@ const Quiz = () => {
                         ))}
                     </div>
                 </div>
+
                 {classes.length ? (
                     <div className='mt-[24px] '>
                         {/* <FillButton className='flex w-max items-center gap-5 px-[40px] py-[14px]'>
@@ -161,43 +173,40 @@ const Quiz = () => {
                                             No
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            Nama Kelas
+                                            Nama
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            Soal
+                                            Materi
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            Jawaban
+                                            URL
                                         </th>
-                                        <th scope='col' className='px-6 py-4 text-center'>
+                                        <th scope='col' className='px-6 py-4'>
+                                            Poin
+                                        </th>
+                                        <th scope='col' className='px-6 py-4'>
                                             Aksi
                                         </th>
+                                        {/* <th scope='col' className='px-6 py-4'>
+                                            Aksi
+                                        </th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {quiz
-                                        ? quiz.map((item, index = 0) => (
+                                    {materi
+                                        ? materi.map((materi, index = 0) => (
                                               <tr key={index + 1} className='border-b border-gray-400 '>
                                                   <th scope='row' className='whitespace-nowrap px-6 py-4 font-medium text-black'>
                                                       {index + 1}
                                                   </th>
-                                                  <td className='px-6 py-4 font-medium text-black'>
-                                                      {getNamaKelasByID(item.id_kelas)}
-                                                  </td>
-                                                  <td className='px-6 py-4 font-medium text-black'>{item.question}</td>
-                                                  <td>
-                                                      {item.options.map((option) => (
-                                                          <div key={option.id_option}>
-                                                              {option.kunci === item.true_answer
-                                                                  ? `${option.kunci}. ${option.option}`
-                                                                  : ''}
-                                                          </div>
-                                                      ))}
-                                                  </td>
-                                                  <td className='flex items-center gap-2 px-6 py-4 font-medium text-black'>
+                                                  <td className='px-6 py-4 font-medium text-black'>{materi.name}</td>
+                                                  <td className='px-6 py-4 font-medium text-black'>{materi.materi}</td>
+                                                  <td className='px-6 py-4 font-medium text-black'>{materi.url}</td>
+                                                  <td className='px-6 py-4 font-medium text-black'>{materi.poin}</td>
+                                                  <td className='mt-[75px] flex gap-2 px-6'>
                                                       <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
                                                           <Link
-                                                              href={`/admin/quiz/${item.id_quiz}`}
+                                                              href={`/admin/materi/${materi.id_materi}`}
                                                               className='flex items-center gap-2 '>
                                                               <MdModeEdit />
                                                               Edit
@@ -208,7 +217,7 @@ const Quiz = () => {
                                                           onClick={() => {
                                                               // handleDelete(item.id_kelas);
                                                               handleNotif();
-                                                              setIdQuiz(item.id_quiz);
+                                                              setIdMateri(materi.id_materi);
                                                           }}>
                                                           <MdDeleteOutline />
                                                           Hapus
@@ -222,20 +231,20 @@ const Quiz = () => {
                         </div>
                     </div>
                 ) : (
-                    <p>Sedang memuat data...</p>
+                    <p>Tidak ada data kelas</p>
                 )}
+                <DeletAdminNotif
+                    isVisible={notif}
+                    handleVisible={handleNotif}
+                    time={2000}
+                    deleted={() => {
+                        handleDelete(idMateri);
+                        handleNotif();
+                    }}
+                />
             </div>
-            <DeletAdminNotif
-                isVisible={notif}
-                handleVisible={handleNotif}
-                deleted={() => {
-                    handleDelete(idQuiz);
-                    handleNotif();
-                }}
-                time={2000}
-            />
         </section>
     );
 };
 
-export default Quiz;
+export default Materi;

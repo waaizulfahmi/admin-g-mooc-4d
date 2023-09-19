@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { MdOutlineDelete } from 'react-icons/md';
 
-const DeletAdminNotif = ({ isVisible, handleVisible }) => {
+const DeletAdminNotif = ({ isVisible, handleVisible, deleted }) => {
     // useEffect(() => {
     //     if (isVisible) {
     //         const timer = setTimeout(() => {
@@ -30,7 +30,9 @@ const DeletAdminNotif = ({ isVisible, handleVisible }) => {
                             className='rounded-[4px] bg-[#EDF3F3] px-[16px] py-[4px] font-bold text-black '>
                             Cancel
                         </button>
-                        <button className='rounded-[4px] bg-alert-1 px-[16px] py-[4px] font-bold text-white'>Hapus</button>
+                        <button className='rounded-[4px] bg-alert-1 px-[16px] py-[4px] font-bold text-white' onClick={deleted}>
+                            Hapus
+                        </button>
                     </div>
                 </div>
             </div>

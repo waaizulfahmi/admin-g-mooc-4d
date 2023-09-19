@@ -148,7 +148,7 @@ export const getClassByLevel = async ({ id, token }) => {
         if (!token) throw new Error('Token must be submitted!');
         if (!id) throw new Error('id must be submitted!');
 
-        const response = await apiInstance.get(`/user/kelas/${id}`, {
+        const response = await apiInstance.get(`/user/kelasByLevel/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,

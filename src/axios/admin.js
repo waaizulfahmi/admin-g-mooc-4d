@@ -50,9 +50,34 @@ export const adminGetAllLevelKelasApi = async ({ token }) => {
 };
 
 /* 
+@ROUTE : /admin/kelasByLevel/id
+*/
+export const adminGetClassByLevel = async ({ id, token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+        if (!id) throw new Error('id must be submitted!');
+
+        const response = await apiInstance.get(`/admin/levelKelas/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
+/* 
 @ROUTE : /admin/kelas/create
 */
-export const adminCreateClassApi = async ({ id_level, image, name, token }) => {
+export const adminCreateClassApi = async ({ id_level, image, description, name, token }) => {
     try {
         if (!token) throw new Error('Token must be submitted!');
         if (!id_level) throw new Error('id level must be submitted!');
@@ -65,10 +90,11 @@ export const adminCreateClassApi = async ({ id_level, image, name, token }) => {
                 id_level,
                 image,
                 name,
+                description,
             },
             {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
                 },
             },
@@ -133,24 +159,53 @@ export const adminGetClassByIdApi = async ({ id_kelas, token }) => {
     }
 };
 
+// api / admin / kelasSearch ? name
+
+/* 
+@ROUTE : /admin/kelasSearch?name=${className}
+*/
+export const adminGetClassByQuery = async ({ className, token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+        if (!className) throw new Error('id kelas must be submitted!');
+
+        const response = await apiInstance.get(`/admin/kelasSearch?name=${className}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
 /* 
 @ROUTE : /admin/kelas/update/${id_kelas}
 */
-export const adminUpdateClassApi = async ({ id_kelas, id_level, name, token }) => {
+export const adminUpdateClassApi = async ({ id_kelas, id_level, name, token, image, description }) => {
     try {
-        if (!token) throw new Error('Token must be submitted!');
-        if (!id_kelas) throw new Error('id kelas must be submitted!');
-        if (!name) throw new Error('name kelas must be submitted!');
+        // if (!token) throw new Error('Token must be submitted!');
+        // if (!id_kelas) throw new Error('id kelas must be submitted!');
+        // if (!name) throw new Error('name kelas must be submitted!');
 
-        const response = await apiInstance.put(
+        const response = await apiInstance.post(
             `/admin/kelas/update/${id_kelas}`,
             {
                 id_level,
                 name,
+                description,
+                image,
             },
             {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
                 },
             },
@@ -175,7 +230,7 @@ export const adminUpdateImageClassApi = async ({ id_kelas, image, token }) => {
         if (!id_kelas) throw new Error('id kelas must be submitted!');
         if (!image) throw new Error('name kelas must be submitted!');
 
-        const response = await apiInstance.put(
+        const response = await apiInstance.post(
             `/admin/kelas/update_image/${id_kelas}`,
             {
                 image,
@@ -226,7 +281,7 @@ export const adminDeleteClassApi = async ({ id_kelas, token }) => {
 /* 
 @ROUTE : /api/admin/materi/create
 */
-export const adminCreateMateriApi = async ({ id_kelas, name, materi, url, token }) => {
+export const adminCreateMateriApi = async ({ id_kelas, name, materi, url, poin, durasi, token }) => {
     try {
         if (!token) throw new Error('Token must be submitted!');
         if (!id_kelas) throw new Error('id kelas must be submitted!');
@@ -241,6 +296,8 @@ export const adminCreateMateriApi = async ({ id_kelas, name, materi, url, token 
                 name,
                 materi,
                 url,
+                durasi,
+                poin,
             },
             {
                 headers: {
@@ -312,16 +369,16 @@ export const adminGetMateriByIdApi = async ({ id_materi, token }) => {
 /* 
 @ROUTE : /admin/materi/update/${id_materi}
 */
-export const adminUpdateMateriApi = async ({ id_materi, id_kelas, name, token }) => {
+export const adminUpdateMateriApi = async ({ id_materi, id_kelas, name, token, url, durasi, materi, poin }) => {
     try {
-        if (!token) throw new Error('Token must be submitted!');
-        if (!id_materi) throw new Error('id materi must be submitted!');
-        if (!id_kelas) throw new Error('id kelas must be submitted!');
-        if (!name) throw new Error('materi name must be submitted!');
+        // if (!token) throw new Error('Token must be submitted!');
+        // if (!id_materi) throw new Error('id materi must be submitted!');
+        // if (!id_kelas) throw new Error('id kelas must be submitted!');
+        // if (!name) throw new Error('materi name must be submitted!');
 
         const response = await apiInstance.put(
             `/admin/materi/update/${id_materi}`,
-            { name, id_kelas },
+            { name, id_kelas, url, durasi, materi, poin },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -499,9 +556,34 @@ export const adminGetQuizByIdApi = async ({ id_quiz, token }) => {
 };
 
 /* 
+@ROUTE : /admin/quizByKelas/${id_kelas}
+*/
+export const adminGetQuizByKelas = async ({ id_kelas, token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+        if (!id_kelas) throw new Error('id quiz must be submitted!');
+
+        const response = await apiInstance.get(`/admin/quiz/${id_kelas}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
+/* 
 @ROUTE : /admin/quiz/create
 */
-export const adminCreateQuizApi = async ({ id_kelas, question, true_answer, option_A, option_B, option_C, option_D, token }) => {
+export const adminCreateQuizApi = async ({ id_kelas, question, true_answer, option_A, option_B, option_C, token }) => {
     try {
         if (!token) throw new Error('Token must be submitted!');
         if (!id_kelas) throw new Error('id quiz must be submitted!');
@@ -510,7 +592,6 @@ export const adminCreateQuizApi = async ({ id_kelas, question, true_answer, opti
         if (!option_A) throw new Error('option_A must be submitted!');
         if (!option_B) throw new Error('option_B must be submitted!');
         if (!option_C) throw new Error('option_C must be submitted!');
-        if (!option_D) throw new Error('option_D must be submitted!');
 
         const response = await apiInstance.post(
             `/admin/quiz/create`,
@@ -521,7 +602,6 @@ export const adminCreateQuizApi = async ({ id_kelas, question, true_answer, opti
                 option_A,
                 option_B,
                 option_C,
-                option_D,
             },
             {
                 headers: {
@@ -544,17 +624,7 @@ export const adminCreateQuizApi = async ({ id_kelas, question, true_answer, opti
 /* 
 @ROUTE : /admin/quiz/update/${id_quiz}
 */
-export const adminUpdateQuizApi = async ({
-    id_quiz,
-    id_kelas,
-    question,
-    true_answer,
-    option_A,
-    option_B,
-    option_C,
-    option_D,
-    token,
-}) => {
+export const adminUpdateQuizApi = async ({ id_quiz, id_kelas, question, true_answer, option_A, option_B, option_C, token }) => {
     try {
         if (!id_quiz) throw new Error('id quiz must be submitted!');
         if (!token) throw new Error('Token must be submitted!');
@@ -564,7 +634,6 @@ export const adminUpdateQuizApi = async ({
         if (!option_A) throw new Error('option_A must be submitted!');
         if (!option_B) throw new Error('option_B must be submitted!');
         if (!option_C) throw new Error('option_C must be submitted!');
-        if (!option_D) throw new Error('option_D must be submitted!');
 
         const response = await apiInstance.put(
             `/admin/quiz/update/${id_quiz}`,
@@ -575,7 +644,6 @@ export const adminUpdateQuizApi = async ({
                 option_A,
                 option_B,
                 option_C,
-                option_D,
             },
             {
                 headers: {

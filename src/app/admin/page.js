@@ -67,7 +67,7 @@ const Admin = () => {
         }
     }, [activeMenuId, token]);
 
-    console.log(classes);
+    // console.log(classes);
 
     return (
         <section className='grid h-screen  w-screen grid-cols-12 bg-primary-1 py-[20px]'>
@@ -172,19 +172,28 @@ const Admin = () => {
                 ) : activeMenuId === 2 ? (
                     <div className='mt-[24px] flex items-center gap-5'>
                         <div className='flex w-max flex-col items-center gap-3 rounded-[20px] bg-white px-[40px] pb-[20px] pt-[14px]'>
-                            <Image alt='' src={'/images/quiz.png'} height={121} width={90} />
-                            <p className='font-bold'>Quiz</p>
+                            <Image alt='' src={'/images/class.jpg'} height={121} width={90} />
+                            <p className='font-bold'>Kelas</p>
                             <FillButton
-                                onClick={() => router.push('/admin/quiz')}
+                                onClick={() => router.push('/admin/kelas')}
                                 className='w-max rounded-[10px] px-[40px] py-[10px]'>
                                 Pilih
                             </FillButton>
                         </div>
                         <div className='flex w-max flex-col items-center gap-3 rounded-[20px] bg-white px-[40px] pb-[20px] pt-[14px]'>
                             <Image alt='' src={'/images/materi.png'} height={121} width={90} />
-                            <p className='font-bold'>Pembelajaran</p>
+                            <p className='font-bold'>Materi</p>
                             <FillButton
-                                onClick={() => router.push('/admin/pembelajaran')}
+                                onClick={() => router.push('/admin/materi')}
+                                className='w-max rounded-[10px] px-[40px] py-[10px]'>
+                                Pilih
+                            </FillButton>
+                        </div>
+                        <div className='flex w-max flex-col items-center gap-3 rounded-[20px] bg-white px-[40px] pb-[20px] pt-[14px]'>
+                            <Image alt='' src={'/images/quiz.png'} height={121} width={90} />
+                            <p className='font-bold'>Quiz</p>
+                            <FillButton
+                                onClick={() => router.push('/admin/quiz')}
                                 className='w-max rounded-[10px] px-[40px] py-[10px]'>
                                 Pilih
                             </FillButton>

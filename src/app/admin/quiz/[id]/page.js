@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { navAdmin, customNavAdminIcon } from '@/data/nav-path';
 import { AiOutlinePoweroff } from 'react-icons/ai';
@@ -13,9 +13,9 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
-import { adminCreateQuizApi, adminGetAllClassApi } from '@/axios/admin';
+import { adminCreateQuizApi, adminGetAllClassApi, adminGetQuizByIdApi, adminUpdateQuizApi } from '@/axios/admin';
 
-const TambahQuiz = () => {
+const EditQuiz = () => {
     const [notif, setNotif] = useState(false);
 
     const { setActiveMenuId } = adminSlice.actions;
@@ -32,22 +32,44 @@ const TambahQuiz = () => {
     const [opsiA, setOpsiA] = useState('');
     const [opsiB, setOpsiB] = useState('');
     const [opsiC, setOpsiC] = useState('');
+    const [quiz, setQuiz] = useState([]);
     const [trueAnswer, setTrueAnswer] = useState();
+    const { id } = useParams();
 
     useEffect(() => {
         if (token) {
             adminGetAllClassApi({ token }).then((res) => {
                 setClasses(res.data);
             });
+            adminGetQuizByIdApi({ token, id_quiz: id }).then((res) => {
+                const dataQuiz = res.data;
+                console.log(dataQuiz);
+                setSoal(dataQuiz.question);
+                const option = dataQuiz.options;
+                option.map((item) => {
+                    if (item.kunci === 'A') {
+                        setOpsiA(item.option);
+                    }
+                    if (item.kunci === 'B') {
+                        setOpsiB(item.option);
+                    }
+                    if (item.kunci === 'C') {
+                        setOpsiC(item.option);
+                    }
+                });
+
+                setTrueAnswer(dataQuiz.true_answer);
+            });
         }
     }, []);
 
-    const handleCreateQuiz = async (e) => {
+    const handleUpdateQuiz = async (e) => {
         e.preventDefault();
 
         try {
-            adminCreateQuizApi({
+            await adminUpdateQuizApi({
                 token,
+                id_quiz: id,
                 id_kelas: idKelas,
                 question: soal,
                 option_A: opsiA,
@@ -109,17 +131,17 @@ const TambahQuiz = () => {
                         Admin
                     </span>{' '}
                     <span className='font-bold'>{'>'}</span>{' '}
-                    <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin/quiz')}>
+                    <span className='cursor-pointer' onClick={() => router.replace('/admin/quiz')}>
                         {' '}
                         List Quiz
                     </span>{' '}
-                    <span className='font-bold'>{'>'}</span> <span> Tambah Quiz</span>
+                    <span className='font-bold'>{'>'}</span> <span> Edit Quiz</span>
                 </div>
                 {classes.length ? (
                     <div style={{ height: 'calc(100vh - 220px)' }} className='mr-[40px] mt-[18px]  '>
                         <div className='w-max rounded-[28px] bg-white px-[54px] py-[14px] drop-shadow'>
-                            <h1 className='pt-3 text-[20px] font-bold leading-[20px]'>Tambah Quiz</h1>
-                            <form className='mt-[20px] flex flex-col gap-3' onSubmit={handleCreateQuiz}>
+                            <h1 className='pt-3 text-[20px] font-bold leading-[20px]'>Edit Quiz</h1>
+                            <form className='mt-[20px] flex flex-col gap-3' onSubmit={handleUpdateQuiz}>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor=''>
                                         Nama Kelas <span className='text-alert-1'>*</span>
@@ -144,6 +166,7 @@ const TambahQuiz = () => {
                                     <input
                                         type='text'
                                         className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                        defaultValue={soal}
                                         onChange={(e) => setSoal(e.target.value)}
                                     />
                                 </div>
@@ -152,20 +175,12 @@ const TambahQuiz = () => {
                                         Opsi Jawaban Soal <span className='text-alert-1'>*</span>
                                     </p>
                                 </div>
-                                {/* <div className='flex flex-col gap-1'>
-                                <label htmlFor=''>
-                                    Jawaban A <span className='text-alert-1'>*</span>
-                                </label>
-                                <input
-                                    type='text'
-                                    className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
-                                />
-                            </div> */}
                                 <div className='flex flex-row items-center gap-4'>
                                     <p>A.</p>
                                     <input
                                         type='text'
                                         className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                        defaultValue={opsiA}
                                         onChange={(e) => setOpsiA(e.target.value)}
                                     />
                                 </div>
@@ -174,6 +189,7 @@ const TambahQuiz = () => {
                                     <input
                                         type='text'
                                         className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                        defaultValue={opsiB}
                                         onChange={(e) => setOpsiB(e.target.value)}
                                     />
                                 </div>
@@ -182,6 +198,7 @@ const TambahQuiz = () => {
                                     <input
                                         type='text'
                                         className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                        defaultValue={opsiC}
                                         onChange={(e) => setOpsiC(e.target.value)}
                                     />
                                 </div>
@@ -241,4 +258,4 @@ const TambahQuiz = () => {
     );
 };
 
-export default TambahQuiz;
+export default EditQuiz;

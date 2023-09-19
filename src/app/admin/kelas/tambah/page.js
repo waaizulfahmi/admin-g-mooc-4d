@@ -13,9 +13,18 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
+import { adminCreateClassApi, adminGetAllLevelKelasApi } from '@/axios/admin';
 
 const TambahPembelajaran = () => {
     const [notif, setNotif] = useState(false);
+    const [dataLevel, setDataLevel] = useState([]);
+
+    // id_level, image, description, name, token
+
+    const [name, setName] = useState();
+    const [description, setDescription] = useState();
+    const [image, setImage] = useState();
+    const [id_level, setIdLevel] = useState(1);
 
     const { setActiveMenuId } = adminSlice.actions;
     const dispatch = useDispatch();
@@ -26,6 +35,28 @@ const TambahPembelajaran = () => {
 
     const [users, setUsers] = useState([]);
     const [classes, setClasses] = useState([]);
+
+    // console.log(token);
+    useEffect(() => {
+        if (token) {
+            adminGetAllLevelKelasApi({ token }).then((res) => {
+                // console.log(res.data);
+                setDataLevel(res.data);
+            });
+        }
+    }, [token]);
+
+    // console.log(token)
+    const handleAddLesson = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await adminCreateClassApi({ token, name, description, image, id_level });
+            console.log(response);
+            router.push('/admin/kelas');
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleNotif = () => setNotif(!notif);
     return (
@@ -75,57 +106,67 @@ const TambahPembelajaran = () => {
                     </span>{' '}
                     <span className='font-bold'>{'>'}</span> <span> Tambah Kelas</span>
                 </div>
-                {/* <div className='mr-[40px] mt-[10px]'>
-                    <div className='flex items-center justify-between '>
-                        
-                        <div className='flex items-center gap-4'>
-                            <FillButton className='flex items-center gap-2 rounded-rad-5 px-[30px] py-[10px]'>
-                                <AiOutlinePlus /> Tambah Data
-                            </FillButton>
-                            <button className='flex items-center gap-2 rounded-rad-5 border border-black px-[20px] py-[10px] font-bold'>
-                                <MdSearch className='h-[24px] w-[24px]' />
-                                Cari
-                            </button>
-                        </div>
-                    </div>
-                    <div className='flex items-center gap-3 pt-3'>
-                        <div className='w-max rounded-[6px] border border-black px-2 py-1 font-bold text-black'>
-                            <span>Semua</span>
-                        </div>
-                        <div className='w-max rounded-[6px] border border-black px-2 py-1 font-bold text-black opacity-50'>
-                            <span>Mudah</span>
-                        </div>
-                        <div className='w-max rounded-[6px] border border-black px-2 py-1 font-bold text-black opacity-50'>
-                            <span>Menengah</span>
-                        </div>
-                        <div className='w-max rounded-[6px] border border-black px-2 py-1 font-bold text-black opacity-50'>
-                            <span>Sulit</span>
-                        </div>
-                    </div>
-                </div> */}
-                <div style={{ height: 'calc(100vh - 220px)' }} className='mr-[40px] mt-[40px]  '>
-                    <div className='w-max rounded-[28px] bg-white px-[54px] py-[40px] drop-shadow'>
-                        <h1 className='text-[20px] font-bold leading-[20px]'>Tambah Kelas</h1>
-                        <form className='mt-[20px] flex flex-col gap-3'>
-                            <div className='flex flex-col gap-1'>
-                                <label htmlFor=''>
-                                    Nama Kelas <span className='text-alert-1'>*</span>
-                                </label>
-                                <input
+
+                {token ? (
+                    <div style={{ height: 'calc(100vh - 220px)' }} className='mr-[40px] mt-[40px]  '>
+                        <div className='w-max rounded-[28px] bg-white px-[54px] py-[40px] drop-shadow'>
+                            <h1 className='text-[20px] font-bold leading-[20px]'>Tambah Kelas</h1>
+                            <form className='mt-[20px] flex flex-col gap-3' onSubmit={handleAddLesson}>
+                                <div className='flex flex-col gap-1'>
+                                    <label htmlFor=''>
+                                        Nama Kelas <span className='text-alert-1'>*</span>
+                                    </label>
+                                    <input
+                                        type='text'
+                                        className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                </div>
+                                <div className='fladminCreateClassApi({ name, description, image });ex flex-col gap-1'>
+                                    <label htmlFor=''>
+                                        Level Kelas <span className='text-alert-1'>*</span>
+                                    </label>
+                                    <select
+                                        onChange={(e) => setIdLevel(e.target.value)}
+                                        name=''
+                                        id=''
+                                        className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'>
+                                        {dataLevel.map((item) => (
+                                            <option key={item.id_level} value={item.id_level}>
+                                                {item.id_level} ({item.name})
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className='flex flex-col gap-1'>
+                                    <label htmlFor=''>
+                                        Deskripsi <span className='text-alert-1'>*</span>
+                                    </label>
+                                    {/* <input
                                     type='text'
                                     className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
-                                />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <label htmlFor=''>
-                                    Deskripsi <span className='text-alert-1'>*</span>
-                                </label>
-                                <input
-                                    type='text'
-                                    className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
-                                />
-                            </div>
-                            <div className='flex flex-col gap-1'>
+                                    onChange={(e) => setDescription(e.target.value)}
+                                /> */}
+                                    <textarea
+                                        name=''
+                                        id=''
+                                        cols='30'
+                                        rows='5'
+                                        className='border p-2'
+                                        onChange={(e) => setDescription(e.target.value)}></textarea>
+                                </div>
+                                <div className='flex flex-col gap-1'>
+                                    <label htmlFor=''>
+                                        Image <span className='text-alert-1'>*</span>
+                                    </label>
+                                    <input
+                                        type='file'
+                                        className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                        onChange={(e) => setImage(e.target.files[0])}
+                                    />
+                                </div>
+                                {image && <Image src={URL.createObjectURL(image)} width={30} height={30} alt='image' />}
+                                {/* <div className='flex flex-col gap-1'>
                                 <label htmlFor=''>
                                     Nama Materi <span className='text-alert-1'>*</span>
                                 </label>
@@ -150,10 +191,14 @@ const TambahPembelajaran = () => {
                                     className='w-max    rounded-[10px] bg-primary-1  px-[40px] py-[8px] font-bold text-white'>
                                     Simpan
                                 </button>
-                            </div>
-                        </form>
+                            </div> */}
+                                <button type='submit'>Submit</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <p>data sedang dimuat...</p>
+                )}
             </div>
             <DeletAdminNotif isVisible={notif} handleVisible={handleNotif} time={2000} />
         </section>
