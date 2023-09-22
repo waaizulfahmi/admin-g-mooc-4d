@@ -28,7 +28,7 @@ const EditMateri = () => {
     const [name, setName] = useState();
     const [materi, setMateri] = useState();
     const [url, setURL] = useState();
-    const [durasi, setDurasi] = useState('00.54');
+    const [durasi, setDurasi] = useState();
     const [poin, setPoin] = useState();
     const [classes, setClasses] = useState([]);
     const [dataMateri, setDataMateri] = useState([]);
@@ -71,7 +71,7 @@ const EditMateri = () => {
                 poin,
             });
             console.log(response);
-            // router.push('/admin/kelas');
+            router.push('/admin/materi');
         } catch (error) {
             console.log(error);
         }
@@ -117,23 +117,23 @@ const EditMateri = () => {
                     <span className='block font-semibold text-[#EDF3F3]'>Keluar</span>
                 </button>
             </div>
-            <div className='col-span-10  rounded-bl-[28px] rounded-tl-[28px] bg-[#EDF3F3] pl-[4n0px] pt-[30px]'>
+            <div className='col-span-10  rounded-bl-[28px] rounded-tl-[28px] bg-[#EDF3F3] p-6 pl-[40px] pt-[30px]'>
                 <div className='flex items-center gap-3 '>
                     <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin')}>
                         Admin
                     </span>{' '}
                     <span className='font-bold'>{'>'}</span>{' '}
-                    <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin/pembelajaran')}>
+                    <span className='cursor-pointer font-bold' onClick={() => router.replace('/admin/materi')}>
                         {' '}
-                        List Kelas
+                        List Materi
                     </span>{' '}
-                    <span className='font-bold'>{'>'}</span> <span> Tambah Materi</span>
+                    <span className='font-bold'>{'>'}</span> <span> Edit Materi</span>
                 </div>
                 {token ? (
                     <div style={{ height: 'calc(100vh - 220px)' }} className='mr-[40px] mt-[40px]  '>
-                        {dataMateri !== null ? (
+                        <div className='flex justify-around'>
                             <div className='w-max rounded-[28px] bg-white px-[54px] py-[40px] drop-shadow'>
-                                <h1 className='text-[20px] font-bold leading-[20px]'>Tambah Materi</h1>
+                                <h1 className='text-[20px] font-bold leading-[20px]'>Edit Materi</h1>
                                 <form className='mt-[20px] flex flex-col gap-3' onSubmit={handleUpdateMateri}>
                                     <div className='flex flex-col gap-1'>
                                         <label htmlFor=''>
@@ -142,9 +142,8 @@ const EditMateri = () => {
                                         <input
                                             type='text'
                                             className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
-                                            onChange={(e) => setName(e.target.value)}
                                             defaultValue={dataMateri.name}
-                                        />
+                                            onChange={(e) => setName(e.target.value)}></input>
                                     </div>
                                     <div className='fladminCreateClassApi({ name, description, image });ex flex-col gap-1'>
                                         <label htmlFor=''>
@@ -200,22 +199,33 @@ const EditMateri = () => {
                                             onChange={(e) => setPoin(e.target.value)}
                                         />
                                     </div>
+                                    <div className='flex flex-col gap-1'>
+                                        <label htmlFor=''>
+                                            Durasi <span className='text-alert-1'>*</span>
+                                        </label>
+                                        <input
+                                            type='integer'
+                                            className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                            defaultValue={dataMateri.durasi}
+                                            onChange={(e) => setDurasi(e.target.value)}
+                                        />
+                                    </div>
 
                                     <button type='submit'>Submit</button>
                                 </form>
                             </div>
-                        ) : (
-                            <p>Data sedang dimuat</p>
-                        )}
-
-                        <iframe
-                            width='560'
-                            height='315'
-                            src={url}
-                            title='YouTube video player'
-                            // frameborder='0'
-                            // allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                        ></iframe>
+                            <div className='flex items-center'>
+                                <iframe
+                                    width='560'
+                                    height='315'
+                                    src={url}
+                                    title='YouTube video player'
+                                    className='rounded-lg'
+                                    // frameborder='0'
+                                    // allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                                ></iframe>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <p>data sedang dimuat...</p>

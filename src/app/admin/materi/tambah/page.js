@@ -21,7 +21,7 @@ const TambahMateri = () => {
     const [name, setName] = useState();
     const [materi, setMateri] = useState();
     const [url, setURL] = useState();
-    const [durasi, setDurasi] = useState('00:54');
+    const [durasi, setDurasi] = useState();
     const [poin, setPoin] = useState();
 
     const { setActiveMenuId } = adminSlice.actions;
@@ -56,7 +56,7 @@ const TambahMateri = () => {
                 poin: resPoin,
             });
             console.log(response);
-            // router.push('/admin/kelas');
+            router.push('/admin/materi');
         } catch (error) {
             console.log(error);
         }
@@ -175,6 +175,16 @@ const TambahMateri = () => {
                                             type='text'
                                             className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
                                             onChange={(e) => setPoin(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className='flex flex-col gap-1'>
+                                        <label htmlFor=''>
+                                            Durasi <span className='text-alert-1'>*</span>
+                                        </label>
+                                        <input
+                                            type='integer'
+                                            className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'
+                                            onChange={(e) => setDurasi(e.target.value)}
                                         />
                                     </div>
 

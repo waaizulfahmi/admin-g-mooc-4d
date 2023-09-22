@@ -40,7 +40,7 @@ const Login = () => {
         });
 
         if (!response?.error) {
-            router.replace('/', { scroll: false });
+            router.replace('/admin', { scroll: false });
         } else if (response?.error) {
             handleNotifAction('error', response.error);
         }
@@ -66,7 +66,7 @@ const Login = () => {
                     </BorderedButton>
                 </div>
             </div>
-            <div className='bg-neutral-7 col-span-8 flex items-center justify-center'>
+            <div className='col-span-8 flex items-center justify-center bg-neutral-7'>
                 <div className='flex w-[646px] flex-col gap-[42px]'>
                     <div className='text-center'>
                         <h1 className='text-title-2 font-bold'>Masuk VoiceSee</h1>
