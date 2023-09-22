@@ -60,17 +60,13 @@ const Login = () => {
                 <div
                     className={`absolute bottom-[30%] left-1/2 flex translate-x-[-50%] flex-col items-center justify-center gap-5 text-white`}>
                     <h1 className='text-[40px] font-bold leading-[20px]'>Hallo !</h1>
-                    <p className='text-center '>Masukkan Detail Pribadi Anda dan Mulailah Pembelajaran Anda</p>
-                    <BorderedButton theme='light' onClick={() => router.replace('/register', { scroll: false })}>
-                        Daftar
-                    </BorderedButton>
+                    <p className='text-center '>Admin Area - Mulai Sesuatu yang Hebat</p>
                 </div>
             </div>
             <div className='col-span-8 flex items-center justify-center bg-neutral-7'>
                 <div className='flex w-[646px] flex-col gap-[42px]'>
                     <div className='text-center'>
                         <h1 className='text-title-2 font-bold'>Masuk VoiceSee</h1>
-                        <p className='text-body-2'>Buktikan Sekarang Semua Bisa Belajar</p>
                     </div>
                     <form className='flex flex-col items-center gap-[24px]' onSubmit={handleSubmit(onSubmit)}>
                         <div className='w-full'>
