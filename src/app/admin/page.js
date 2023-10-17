@@ -12,7 +12,7 @@ import { MdDeleteOutline, MdModeEdit } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 
-import { adminGetAllUserApi, adminGetAllClassApi } from '@/axios/admin';
+import { adminGetAllUserApi, adminGetAllClassApi, adminGetAllProgressUserApi } from '@/axios/admin';
 // import ArrowButton from '@/components/atoms/ArrowButton';
 
 // const breadCrumb = (sideMenu) => {
@@ -44,7 +44,8 @@ const Admin = () => {
             if (activeMenuId === 1) {
                 const fetchApi = async () => {
                     try {
-                        const response = await adminGetAllUserApi({ token });
+                        const response = await adminGetAllProgressUserApi({ token });
+                        console.log(response);
                         setUsers(response.data);
                     } catch (error) {
                         console.log('ADMIN GET ALL USER: ', error.message);
@@ -125,13 +126,13 @@ const Admin = () => {
                                             Nama
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            Pembelajaran
+                                            Kelas
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
                                             Progres
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            skor
+                                            Poin
                                         </th>
                                         {/* <th scope='col' className='px-6 py-4'>
                                             Aksi
@@ -140,17 +141,22 @@ const Admin = () => {
                                 </thead>
                                 <tbody>
                                     {users
-                                        ? users.map((user) => (
+                                        ? users.map((user, index) => (
                                               <tr key={user.id_user} className='border-b border-gray-400 '>
                                                   <th scope='row' className='whitespace-nowrap px-6 py-4 font-medium text-black'>
-                                                      {user.id_user}
+                                                      {index + 1}
                                                   </th>
                                                   <td className='px-6 py-4 font-medium text-black'>{user.name}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>
-                                                      {user.id_user % 2 === 0 ? 'PHP' : 'JavaScript'}
+                                                      {user.kelas.map((kelas, index) => (
+                                                          <span className='ml-2' key={index}>
+                                                              {kelas},
+                                                          </span>
+                                                      ))}
                                                   </td>
-                                                  <td className='px-6 py-4 font-medium text-black'>40%</td>
-                                                  <td className='px-6 py-4 font-medium text-black'>80</td>
+
+                                                  <td className='px-6 py-4 font-medium text-black'>{user.progress}</td>
+                                                  <td className='px-6 py-4 font-medium text-black'>{user.poin}</td>
                                                   {/* <td className='flex flex-col gap-1 px-6 py-4 font-medium text-black'>
                                                       {' '}
                                                       <button className='flex w-max items-center rounded-[4px] bg-primary-1 p-[4px] text-white'>

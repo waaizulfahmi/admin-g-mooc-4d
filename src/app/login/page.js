@@ -66,7 +66,7 @@ const Login = () => {
             <div className='col-span-8 flex items-center justify-center bg-neutral-7'>
                 <div className='flex w-[646px] flex-col gap-[42px]'>
                     <div className='text-center'>
-                        <h1 className='text-title-2 font-bold'>Masuk VoiceSee</h1>
+                        <h1 className='text-title-2 font-bold'>Masuk G-MOOC 4D</h1>
                     </div>
                     <form className='flex flex-col items-center gap-[24px]' onSubmit={handleSubmit(onSubmit)}>
                         <div className='w-full'>

@@ -11,18 +11,8 @@ import { getActiveMenuId, adminSlice } from '@/redux/admin';
 import { MdDeleteOutline, MdModeEdit, MdSearch } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
-import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
-import {
-    adminDeleteClassApi,
-    adminDeleteMateriApi,
-    adminGetAllClassApi,
-    adminGetAllLevelKelasApi,
-    adminGetClassByLevel,
-} from '@/axios/admin';
-import { getImageFile } from '@/utils/getServerStorage';
-import { formatDotString } from '@/utils/formatDot';
-import { getClassByLevel } from '@/axios/user';
+import { adminDeleteMateriApi, adminGetAllLevelKelasApi, adminGetClassByLevel, adminGetMateriByQuery } from '@/axios/admin';
 import Link from 'next/link';
 
 const Materi = () => {
@@ -41,6 +31,7 @@ const Materi = () => {
     const [idLevel, setIdLevel] = useState(1);
     const [loadData, setLoadData] = useState(false);
     const [idMateri, setIdMateri] = useState(0);
+    const [searchMateri, setSearchMateri] = useState();
 
     // console.log(token);
 
@@ -70,6 +61,17 @@ const Materi = () => {
 
     // console.log(materi);
     // console.log(classes);
+
+    const handleSearch = () => {
+        if (searchMateri) {
+            adminGetMateriByQuery({ token, query: searchMateri }).then((res) => {
+                // console.log(res);
+                setMateri(res.data);
+            });
+        } else {
+            setLoadData(true);
+        }
+    };
 
     const handleDelete = (id) => {
         adminDeleteMateriApi({ token, id_materi: id }).then((res) => {
@@ -137,10 +139,17 @@ const Materi = () => {
                                 className='flex items-center gap-2 rounded-rad-5 px-[30px] py-[10px]'>
                                 <AiOutlinePlus /> Tambah Data
                             </FillButton>
-                            <button className='flex items-center gap-2 rounded-rad-5 border border-black px-[20px] py-[10px] font-bold'>
-                                <MdSearch className='h-[24px] w-[24px]' />
-                                Cari
-                            </button>
+                            <div className='flex items-center gap-2'>
+                                <input
+                                    type='search'
+                                    className='rounded-md p-2'
+                                    placeholder='Search Materi...'
+                                    onChange={(e) => setSearchMateri(e.target.value)}
+                                />
+                                <button onClick={handleSearch}>
+                                    <MdSearch className='h-[24px] w-[24px]' />
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div className='flex items-center gap-3 pt-3'>

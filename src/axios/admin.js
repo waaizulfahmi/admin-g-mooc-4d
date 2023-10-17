@@ -26,6 +26,30 @@ export const adminGetAllUserApi = async ({ token }) => {
 };
 
 /* 
+@ROUTE : /admin/user/progress
+*/
+export const adminGetAllProgressUserApi = async ({ token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+
+        const response = await apiInstance.get('/admin/user/progress', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
+/* 
 @ROUTE : /admin/levelKelas/all
 */
 export const adminGetAllLevelKelasApi = async ({ token }) => {
@@ -164,12 +188,12 @@ export const adminGetClassByIdApi = async ({ id_kelas, token }) => {
 /* 
 @ROUTE : /admin/kelasSearch?name=${className}
 */
-export const adminGetClassByQuery = async ({ className, token }) => {
+export const adminGetClassByQuery = async ({ query, token }) => {
     try {
         if (!token) throw new Error('Token must be submitted!');
-        if (!className) throw new Error('id kelas must be submitted!');
+        if (!query) throw new Error('query must be submitted!');
 
-        const response = await apiInstance.get(`/admin/kelasSearch?name=${className}`, {
+        const response = await apiInstance.get(`/admin/kelasSearch?name=${query}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
@@ -325,6 +349,31 @@ export const adminGetAllMateriApi = async ({ token }) => {
         if (!token) throw new Error('Token must be submitted!');
 
         const response = await apiInstance.get(`/admin/materi/all`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
+/* 
+@ROUTE : /admin/materiSearch?name=${query}
+*/
+export const adminGetMateriByQuery = async ({ query, token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+        if (!query) throw new Error('query must be submitted!');
+
+        const response = await apiInstance.get(`/admin/materiSearch?name=${query}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
@@ -514,6 +563,31 @@ export const adminGetAllQuizApi = async ({ token }) => {
         if (!token) throw new Error('Token must be submitted!');
 
         const response = await apiInstance.get(`/admin/quiz/all`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            // console.log(error?.response); //Uncomment for debugging
+            const errorMsg = error?.response?.data?.metadata?.message;
+            throw new Error(errorMsg);
+        }
+        throw new Error(error.message); //throw custom error
+    }
+};
+
+/* 
+@ROUTE : /admin/quizSearch?name=${query}
+*/
+export const adminGetQuizByQuery = async ({ query, token }) => {
+    try {
+        if (!token) throw new Error('Token must be submitted!');
+        if (!query) throw new Error('query must be submitted!');
+
+        const response = await apiInstance.get(`/admin/quizSearch?name=${query}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,

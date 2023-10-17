@@ -36,7 +36,10 @@ const Pembelajaran = () => {
     const [idLevel, setIdLevel] = useState(1);
     const [loadData, setLoadData] = useState(false);
     const [idKelas, setIdKelas] = useState(0);
-    const [searchKelas, setSearchKelas] = useState('');
+    const [searchKelas, setSearchKelas] = useState();
+
+    // console.log(searchKelas);
+    // console.log(typeof searchKelas);
 
     // console.log(token);
 
@@ -59,13 +62,21 @@ const Pembelajaran = () => {
         }
     }, [idLevel, token, loadData]);
 
-    // console.log(classes);
+    // console.log(searchKelas);
+
+    // if (searchKelas === '') {
+    //     setLoadData(true);
+    // }
 
     const handleSearch = () => {
-        adminGetClassByQuery({ token, className: searchKelas }).then((res) => {
-            // console.log(res);
-            setClasses(res.data);
-        });
+        if (searchKelas) {
+            adminGetClassByQuery({ token, query: searchKelas }).then((res) => {
+                // console.log(res);
+                setClasses(res.data);
+            });
+        } else {
+            setLoadData(true);
+        }
     };
 
     const handleDelete = (id) => {
