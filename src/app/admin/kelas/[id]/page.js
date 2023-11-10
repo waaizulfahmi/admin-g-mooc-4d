@@ -5,6 +5,7 @@ import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { MdUpdate } from 'react-icons/md';
 import { navAdmin, customNavAdminIcon } from '@/data/nav-path';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,6 +13,8 @@ import { getActiveMenuId, adminSlice } from '@/redux/admin';
 
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { getImageFile } from '@/utils/getServerStorage';
+
+import Swal from 'sweetalert2';
 
 export default function EditKelas() {
     const { data } = useSession();
@@ -59,9 +62,25 @@ export default function EditKelas() {
                 token,
             }).then((res) => {
                 console.log(res);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Kelas berhasil diperbarui!',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true,
+                }).then(() => {
+                    router.push('/admin/kelas');
+                });
             });
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `Terjadi kesalahan: ${error.message || error}`,
+                timer: 5000,
+                timerProgressBar: true,
+            });
         }
     };
 
@@ -192,7 +211,11 @@ export default function EditKelas() {
                                                 />
                                             )}
                                         </div>
-                                        <button type='submit'>Update</button>
+                                        <button
+                                            type='submit'
+                                            className='mx-auto flex items-center rounded bg-primary-1 px-3 py-2 text-center  text-white transition-all duration-300 hover:bg-primary-2'>
+                                            <MdUpdate className='mr-2' /> Update
+                                        </button>
                                     </form>
                                 </div>
                             </div>

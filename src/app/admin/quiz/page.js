@@ -220,7 +220,7 @@ const Quiz = () => {
                                                       ))}
                                                   </td>
                                                   <td className='flex items-center gap-2 px-6 py-4 font-medium text-black'>
-                                                      <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                                      <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-primary-2'>
                                                           <Link
                                                               href={`/admin/quiz/${item.id_quiz}`}
                                                               className='flex items-center gap-2 '>
@@ -229,7 +229,7 @@ const Quiz = () => {
                                                           </Link>
                                                       </button>
                                                       <button
-                                                          className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'
+                                                          className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-red-500'
                                                           onClick={() => {
                                                               // handleDelete(item.id_kelas);
                                                               handleNotif();

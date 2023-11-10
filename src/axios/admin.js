@@ -31,6 +31,7 @@ export const adminGetAllUserApi = async ({ token }) => {
 export const adminGetAllProgressUserApi = async ({ token }) => {
     try {
         if (!token) throw new Error('Token must be submitted!');
+        console.log(token);
 
         const response = await apiInstance.get('/admin/user/progress', {
             headers: {

@@ -8,12 +8,13 @@ import { navAdmin, customNavAdminIcon } from '@/data/nav-path';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { getActiveMenuId, adminSlice } from '@/redux/admin';
-import { MdDeleteOutline, MdModeEdit, MdSearch } from 'react-icons/md';
+import { MdDeleteOutline, MdModeEdit, MdSearch, MdUpdate } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { adminCreateQuizApi, adminGetAllClassApi, adminGetQuizByIdApi, adminUpdateQuizApi } from '@/axios/admin';
+import Swal from 'sweetalert2';
 
 const EditQuiz = () => {
     const [notif, setNotif] = useState(false);
@@ -78,9 +79,25 @@ const EditQuiz = () => {
                 true_answer: trueAnswer,
             }).then((res) => {
                 console.log(res);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Kuis berhasil diperbarui!',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true,
+                }).then(() => {
+                    router.push('/admin/quiz');
+                });
             });
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `Terjadi kesalahan: ${error.message || error}`,
+                timer: 5000,
+                timerProgressBar: true,
+            });
         }
     };
 
@@ -242,8 +259,8 @@ const EditQuiz = () => {
                                 <div className='mt-[10px] flex items-center justify-center'>
                                     <button
                                         type='submit'
-                                        className='w-max    rounded-[10px] bg-primary-1  px-[40px] py-[8px] font-bold text-white'>
-                                        Simpan
+                                        className='mx-auto flex items-center rounded bg-primary-1 px-3 py-2 text-center  text-white transition-all duration-300 hover:bg-primary-2'>
+                                        <MdUpdate className='mr-2' /> Update
                                     </button>
                                 </div>
                             </form>

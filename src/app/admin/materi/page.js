@@ -213,7 +213,7 @@ const Materi = () => {
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.url}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.poin}</td>
                                                   <td className='mt-[75px] flex gap-2 px-6'>
-                                                      <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                                      <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-primary-2'>
                                                           <Link
                                                               href={`/admin/materi/${materi.id_materi}`}
                                                               className='flex items-center gap-2 '>
@@ -222,7 +222,7 @@ const Materi = () => {
                                                           </Link>
                                                       </button>
                                                       <button
-                                                          className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'
+                                                          className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-red-500'
                                                           onClick={() => {
                                                               // handleDelete(item.id_kelas);
                                                               handleNotif();

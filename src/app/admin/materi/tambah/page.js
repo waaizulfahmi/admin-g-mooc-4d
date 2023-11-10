@@ -14,7 +14,7 @@ import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { adminCreateClassApi, adminCreateMateriApi, adminGetAllClassApi, adminGetAllLevelKelasApi } from '@/axios/admin';
-
+import Swal from 'sweetalert2';
 const TambahMateri = () => {
     const [notif, setNotif] = useState(false);
 
@@ -56,9 +56,24 @@ const TambahMateri = () => {
                 poin: resPoin,
             });
             console.log(response);
-            router.push('/admin/materi');
+            Swal.fire({
+                icon: 'success',
+                title: 'Materi berhasil ditambahkan!',
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true,
+            }).then(() => {
+                router.push('/admin/materi');
+            });
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `Terjadi kesalahan: ${error.message || error}`,
+                timer: 5000,
+                timerProgressBar: true,
+            });
         }
     };
 
@@ -188,7 +203,11 @@ const TambahMateri = () => {
                                         />
                                     </div>
 
-                                    <button type='submit'>Submit</button>
+                                    <button
+                                        type='submit'
+                                        className='mx-auto flex items-center rounded bg-primary-1 px-3 py-2 text-center  text-white transition-all duration-300 hover:bg-primary-2'>
+                                        <MdSave className='mr-2' /> Submit
+                                    </button>
                                 </form>
                             </div>
                             <div className='flex items-center'>

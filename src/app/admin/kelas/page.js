@@ -187,7 +187,7 @@ const Pembelajaran = () => {
                                 <h1 className='mt-[14px] text-body-2 font-bold'>{item.name}</h1>
                                 <p>{formatDotString(item.description, 50)}</p>
                                 <div className='absolute bottom-[14px] left-1/2 flex translate-x-[-50%] gap-2'>
-                                    <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white'>
+                                    <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-primary-2'>
                                         <Link href={`/admin/kelas/${item.id_kelas}`} className='flex items-center gap-2 '>
                                             <MdModeEdit />
                                             Edit
@@ -200,7 +200,7 @@ const Pembelajaran = () => {
                                         Hapus
                                     </button> */}
                                     <button
-                                        className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white'
+                                        className='flex items-center gap-2 rounded-[4px] bg-alert-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-red-500'
                                         onClick={() => {
                                             // handleDelete(item.id_kelas);
                                             handleNotif();
