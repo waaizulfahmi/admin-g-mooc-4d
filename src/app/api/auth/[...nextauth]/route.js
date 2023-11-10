@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 // import { loginApi } from '@/axios/auth';
-import axios from 'axios';
+// import axios from 'axios';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { apiInstance } from '../../../../axios/instance';
 
 const handler = NextAuth({
     providers: [
@@ -26,8 +27,8 @@ const handler = NextAuth({
 
                     // return response.data;
 
-                    const res = await axios.post(
-                        'https://nurz.site/api/login',
+                    const res = await apiInstance.post(
+                        '/login',
                         {
                             email: credentials.email,
                             password: credentials.password,
