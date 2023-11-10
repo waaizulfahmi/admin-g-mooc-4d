@@ -12,7 +12,7 @@ const monsterrat = Montserrat({
 });
 
 export const metadata = {
-    title: 'VoiceSee',
+    title: 'Admin Area | GMOOC 4D',
     description: 'Apps for who have spirit of learning!',
 };
 
