@@ -1,3 +1,3 @@
 export const getImageFile = (imageUrl) => {
-    return `https://nurz.site/storage/${imageUrl}`;
+    return `https://be.gmooc4d.id/storage/${imageUrl}`;
 };
