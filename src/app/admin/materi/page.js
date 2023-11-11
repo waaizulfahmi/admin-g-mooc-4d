@@ -185,6 +185,9 @@ const Materi = () => {
                                             Nama
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
+                                            Kelas
+                                        </th>
+                                        <th scope='col' className='px-6 py-4'>
                                             Materi
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
@@ -209,10 +212,11 @@ const Materi = () => {
                                                       {index + 1}
                                                   </th>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.name}</td>
+                                                  <td className='px-6 py-4 font-medium text-black'>{materi.name}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.materi}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.url}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.poin}</td>
-                                                  <td className='mt-[75px] flex gap-2 px-6'>
+                                                  <td className='flex items-center gap-2 px-6 py-4 font-medium text-black'>
                                                       <button className='rounded-[4px] bg-primary-1 px-[12px] py-[6px] text-white transition-all duration-300 hover:bg-primary-2'>
                                                           <Link
                                                               href={`/admin/materi/${materi.id_materi}`}

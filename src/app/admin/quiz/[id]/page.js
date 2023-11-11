@@ -41,10 +41,14 @@ const EditQuiz = () => {
         if (token) {
             adminGetAllClassApi({ token }).then((res) => {
                 setClasses(res.data);
+                // console.log(res.data);
             });
             adminGetQuizByIdApi({ token, id_quiz: id }).then((res) => {
                 const dataQuiz = res.data;
-                console.log(dataQuiz);
+                // console.log(dataQuiz);
+                setQuiz(dataQuiz);
+                // console.log('ini dari quiz', dataQuiz.id_kelas);
+                setIdKelas(dataQuiz.id_kelas);
                 setSoal(dataQuiz.question);
                 const option = dataQuiz.options;
                 option.map((item) => {
@@ -63,6 +67,15 @@ const EditQuiz = () => {
             });
         }
     }, []);
+
+    const selectedClassName = classes.find((item) => item.id_kelas === quiz.id_kelas)?.name;
+    // console.log('ini selectedclass', selectedClassName);
+    // const selectedClass = classes.find((item) => {
+    //     // Lakukan operasi atau pemeriksaan lain jika diperlukan dengan item
+    //     return item.id_kelas === quiz.id_kelas;
+    // });
+
+    // const selectedClassName = selectedClass?.name;
 
     const handleUpdateQuiz = async (e) => {
         e.preventDefault();
@@ -166,14 +179,17 @@ const EditQuiz = () => {
                                     <select
                                         id='countries'
                                         className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] px-2 py-1 font-monsterrat outline-none'
-                                        onChange={(e) => setIdKelas(e.target.value)}>
-                                        {classes.length
-                                            ? classes.map((item) => (
-                                                  <option key={item.id_kelas} value={item.id_kelas}>
-                                                      {item.name}
-                                                  </option>
-                                              ))
-                                            : null}
+                                        onChange={(e) => setIdKelas(e.target.value)}
+                                        // defaultValue={idKelas}
+                                        value={idKelas}
+                                        readOnly>
+                                        {classes.map((item) => (
+                                            <option disabled key={item.id_kelas} value={item.id_kelas}>
+                                                {selectedClassName && item.id_kelas === quiz.id_kelas
+                                                    ? `${selectedClassName}`
+                                                    : item.name}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className='flex flex-col gap-1'>
