@@ -59,8 +59,10 @@ const Materi = () => {
         }
     }, [idLevel, token, loadData]);
 
-    // console.log(materi);
-    // console.log(classes);
+    function getNamaKelasByID(id_kelas) {
+        const kelas = classes.find((kelas) => kelas.id_kelas === id_kelas);
+        return kelas.name;
+    }
 
     const handleSearch = () => {
         if (searchMateri) {
@@ -182,10 +184,10 @@ const Materi = () => {
                                             No
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            Nama
+                                            Kelas
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
-                                            Kelas
+                                            Nama
                                         </th>
                                         <th scope='col' className='px-6 py-4'>
                                             Materi
@@ -211,7 +213,9 @@ const Materi = () => {
                                                   <th scope='row' className='whitespace-nowrap px-6 py-4 font-medium text-black'>
                                                       {index + 1}
                                                   </th>
-                                                  <td className='px-6 py-4 font-medium text-black'>{materi.name}</td>
+                                                  <td className='px-6 py-4 font-medium text-black'>
+                                                      {getNamaKelasByID(materi.id_kelas)}
+                                                  </td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.name}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.materi}</td>
                                                   <td className='px-6 py-4 font-medium text-black'>{materi.url}</td>
