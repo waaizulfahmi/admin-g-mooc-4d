@@ -8,7 +8,7 @@ import { navAdmin, customNavAdminIcon } from '@/data/nav-path';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { getActiveMenuId, adminSlice } from '@/redux/admin';
-import { MdDeleteOutline, MdModeEdit, MdSearch } from 'react-icons/md';
+import { MdDeleteOutline, MdModeEdit, MdSearch, MdSave } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FillButton from '@/components/atoms/FillButton';
 import BorderedButton from '@/components/atoms/BorderedButton';
