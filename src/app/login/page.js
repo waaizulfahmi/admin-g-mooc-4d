@@ -49,7 +49,7 @@ const Login = () => {
     return (
         <section className='grid h-screen grid-cols-12'>
             <div className={`relative  col-span-4 h-full`}>
-                <Image priority src={'/images/left-auth.png'} alt='' fill sizes='100vh' />
+                <Image priority src={'/images/left-auth.webp'} alt='' fill sizes='100vh' />
                 <Image
                     alt=''
                     src={'/images/icon-white.svg'}
