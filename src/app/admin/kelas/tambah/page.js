@@ -44,7 +44,9 @@ const TambahPembelajaran = () => {
     const admin = require('firebase-admin');
     const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
 
-    initializeApp();
+    if (typeof window !== 'undefined') {
+        initializeApp();
+    }
 
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
