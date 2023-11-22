@@ -12,6 +12,9 @@ const nextConfig = {
             // Exclude fs from being bundled during the client-side build
             config.resolve.fallback = {
                 fs: false,
+                net: false,
+                tls: false,
+                child_process: false,
             };
         }
 
