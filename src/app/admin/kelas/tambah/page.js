@@ -15,7 +15,7 @@ import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { adminCreateClassApi, adminGetAllLevelKelasApi } from '@/axios/admin';
 import Swal from 'sweetalert2';
-import { initializeApp } from 'firebase-admin/app';
+import { admin } from '@/utils/firebase-admin';
 import { getMessaging } from 'firebase/messaging';
 
 const TambahPembelajaran = () => {
@@ -41,17 +41,6 @@ const TambahPembelajaran = () => {
     const [classes, setClasses] = useState([]);
 
     // firebase
-    const admin = require('firebase-admin');
-    const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
-
-    if (typeof window !== 'undefined') {
-        initializeApp();
-    }
-
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: 'https://g-mooc4d-default-rtdb.asia-southeast1.firebasedatabase.app',
-    });
 
     // console.log(token);
     useEffect(() => {
