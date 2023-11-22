@@ -15,6 +15,8 @@ import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { adminCreateClassApi, adminGetAllLevelKelasApi } from '@/axios/admin';
 import Swal from 'sweetalert2';
+import { initializeApp } from 'firebase-admin/app';
+import { getMessaging } from 'firebase/messaging';
 
 const TambahPembelajaran = () => {
     const [notif, setNotif] = useState(false);
@@ -37,6 +39,17 @@ const TambahPembelajaran = () => {
 
     const [users, setUsers] = useState([]);
     const [classes, setClasses] = useState([]);
+
+    // firebase
+    const admin = require('firebase-admin');
+    const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
+
+    initializeApp();
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: 'https://g-mooc4d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    });
 
     // console.log(token);
     useEffect(() => {
@@ -63,6 +76,28 @@ const TambahPembelajaran = () => {
             }).then(() => {
                 router.push('/admin/kelas');
             });
+            const registrationToken =
+                'djUhpFEpuGHGVn-w1kFf3-:APA91bFFajyJ9Gikv-sbw8jFWsbprdyReAbIXgpcR_gNPAVzWCrWySU75GJf84fdo3fL_PbmIx0002gtF4dbsctz0cQxg646jEyWVUYFhRnMhqPc8Wa8mS_-lmfDoB1KCf6_I_OiFG6L';
+
+            const message = {
+                data: {
+                    score: '850',
+                    time: '2:45',
+                },
+                token: registrationToken,
+            };
+
+            // Send a message to the device corresponding to the provided
+            // registration token.
+            getMessaging()
+                .send(message)
+                .then((response) => {
+                    // Response is a message ID string.
+                    console.log('Successfully sent message:', response);
+                })
+                .catch((error) => {
+                    console.log('Error sending message:', error);
+                });
         } catch (error) {
             console.log(error);
             Swal.fire({
