@@ -15,8 +15,11 @@ import BorderedButton from '@/components/atoms/BorderedButton';
 import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { adminCreateClassApi, adminGetAllLevelKelasApi } from '@/axios/admin';
 import Swal from 'sweetalert2';
-import { admin } from '@/utils/firebase-admin';
+// import { initializeApp } from 'firebase-admin/app';
 import { getMessaging } from 'firebase/messaging';
+
+import { getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 
 const TambahPembelajaran = () => {
     const [notif, setNotif] = useState(false);
@@ -41,6 +44,24 @@ const TambahPembelajaran = () => {
     const [classes, setClasses] = useState([]);
 
     // firebase
+    const admin = require('firebase-admin');
+    const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
+
+    // const alreadyCreatedAps = getApps();
+    const yourFirebaseAdminConfig = {
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: 'https://g-mooc4d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    };
+
+    admin.initializeApp(yourFirebaseAdminConfig);
+
+    // initializeApp(yourFirebaseAdminConfig, 'app2');
+    // const app = initializeApp();
+
+    // const App = alreadyCreatedAps.length === 0 ? initializeApp({ yourFirebaseAdminConfig }, 'app') : alreadyCreatedAps[0];
+    // initializeApp(App);
+
+    // admin.initializeApp({});
 
     // console.log(token);
     useEffect(() => {
