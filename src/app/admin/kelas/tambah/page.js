@@ -47,13 +47,15 @@ const TambahPembelajaran = () => {
     const admin = require('firebase-admin');
     const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
 
-    // const alreadyCreatedAps = getApps();
+    const alreadyCreatedAps = admin.apps;
     const yourFirebaseAdminConfig = {
         credential: admin.credential.cert(serviceAccount),
         databaseURL: 'https://g-mooc4d-default-rtdb.asia-southeast1.firebasedatabase.app',
     };
 
-    admin.initializeApp(yourFirebaseAdminConfig);
+    if (alreadyCreatedAps.length === 0) {
+        admin.initializeApp(yourFirebaseAdminConfig, 'gmooc-notif');
+    }
 
     // initializeApp(yourFirebaseAdminConfig, 'app2');
     // const app = initializeApp();
