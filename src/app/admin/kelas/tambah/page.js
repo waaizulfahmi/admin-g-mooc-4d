@@ -16,10 +16,9 @@ import DeletAdminNotif from '@/components/organism/DeletAdminNotif';
 import { adminCreateClassApi, adminGetAllLevelKelasApi } from '@/axios/admin';
 import Swal from 'sweetalert2';
 // import { initializeApp } from 'firebase-admin/app';
-import { getMessaging } from 'firebase/messaging';
+// import { getMessaging } from 'firebase/messaging';
 
-import { getApps, initializeApp } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
+
 
 const TambahPembelajaran = () => {
     const [notif, setNotif] = useState(false);
@@ -44,18 +43,18 @@ const TambahPembelajaran = () => {
     const [classes, setClasses] = useState([]);
 
     // firebase
-    const admin = require('firebase-admin');
-    const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
+    // const admin = require('firebase-admin');
+    // const serviceAccount = require('./g-mooc4d-firebase-adminsdk-xakvb-0505405a52.json');
 
-    const alreadyCreatedAps = admin.apps;
-    const yourFirebaseAdminConfig = {
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: 'https://g-mooc4d-default-rtdb.asia-southeast1.firebasedatabase.app',
-    };
+    // const alreadyCreatedAps = admin.apps;
+    // const yourFirebaseAdminConfig = {
+    //     credential: admin.credential.cert(serviceAccount),
+    //     databaseURL: 'https://g-mooc4d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    // };
 
-    if (alreadyCreatedAps.length === 0) {
-        admin.initializeApp(yourFirebaseAdminConfig, 'gmooc-notif');
-    }
+    // if (alreadyCreatedAps.length === 0) {
+    //     admin.initializeApp(yourFirebaseAdminConfig, 'gmooc-notif');
+    // }
 
     // initializeApp(yourFirebaseAdminConfig, 'app2');
     // const app = initializeApp();
@@ -90,28 +89,21 @@ const TambahPembelajaran = () => {
             }).then(() => {
                 router.push('/admin/kelas');
             });
-            const registrationToken =
-                'djUhpFEpuGHGVn-w1kFf3-:APA91bFFajyJ9Gikv-sbw8jFWsbprdyReAbIXgpcR_gNPAVzWCrWySU75GJf84fdo3fL_PbmIx0002gtF4dbsctz0cQxg646jEyWVUYFhRnMhqPc8Wa8mS_-lmfDoB1KCf6_I_OiFG6L';
-
-            const message = {
-                data: {
-                    score: '850',
-                    time: '2:45',
+            fetch('https://server-notif.vercel.app/api/notification/sendToAll', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-                token: registrationToken,
-            };
+                body: JSON.stringify({
+                    message: 'Kelas baru telah ditambahkan!', 
+                   
+                }),
+            });
+            
 
             // Send a message to the device corresponding to the provided
             // registration token.
-            getMessaging()
-                .send(message)
-                .then((response) => {
-                    // Response is a message ID string.
-                    console.log('Successfully sent message:', response);
-                })
-                .catch((error) => {
-                    console.log('Error sending message:', error);
-                });
+            
         } catch (error) {
             console.log(error);
             Swal.fire({
