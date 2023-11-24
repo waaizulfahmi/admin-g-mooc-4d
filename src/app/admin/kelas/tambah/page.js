@@ -18,8 +18,6 @@ import Swal from 'sweetalert2';
 // import { initializeApp } from 'firebase-admin/app';
 // import { getMessaging } from 'firebase/messaging';
 
-
-
 const TambahPembelajaran = () => {
     const [notif, setNotif] = useState(false);
     const [dataLevel, setDataLevel] = useState([]);
@@ -80,6 +78,19 @@ const TambahPembelajaran = () => {
         try {
             const response = await adminCreateClassApi({ token, name, description, image, id_level });
             console.log(response);
+            const notificationResponse = await fetch('https://server-notif.vercel.app/api/notification/sendToAll', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Tambahkan header lain jika diperlukan (misalnya token otorisasi)
+                },
+                body: JSON.stringify({
+                    message: 'Kelas baru telah ditambahkan!', // Sesuaikan pesan notifikasi
+                }),
+            });
+
+            const notificationResult = await notificationResponse.json();
+            console.log('Notification Response:', notificationResult);
             Swal.fire({
                 icon: 'success',
                 title: 'Kelas berhasil ditambahkan!',
@@ -89,21 +100,9 @@ const TambahPembelajaran = () => {
             }).then(() => {
                 router.push('/admin/kelas');
             });
-            fetch('https://server-notif.vercel.app/api/notification/sendToAll', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: 'Kelas baru telah ditambahkan!', 
-                   
-                }),
-            });
-            
 
             // Send a message to the device corresponding to the provided
             // registration token.
-            
         } catch (error) {
             console.log(error);
             Swal.fire({
