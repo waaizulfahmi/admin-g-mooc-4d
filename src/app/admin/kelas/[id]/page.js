@@ -37,7 +37,7 @@ export default function EditKelas() {
 
     // const [selectedLevel, setSelectedLevel] = useState(dataClass ? dataClass.id_level : 1);
 
-    console.log(dataClass?.id_level);
+    // console.log(dataClass?.id_level);
 
     useEffect(() => {
         if (dataClass) {
