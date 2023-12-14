@@ -31,10 +31,19 @@ export default function EditKelas() {
     const [name, setName] = useState();
     const [description, setDescription] = useState();
     const [image, setImage] = useState();
-    const [idLevel, setIdLevel] = useState(1);
+    // const [idLevel, setIdLevel] = useState(1);
+    const [idLevel, setIdLevel] = useState('');
     const { id } = useParams();
 
-    // console.log(id);
+    // const [selectedLevel, setSelectedLevel] = useState(dataClass ? dataClass.id_level : 1);
+
+    console.log(dataClass?.id_level);
+
+    useEffect(() => {
+        if (dataClass) {
+            setIdLevel(dataClass.id_level || 1);
+        }
+    }, [dataClass]);
 
     useEffect(() => {
         if (token) {
@@ -161,6 +170,7 @@ export default function EditKelas() {
                                                 onChange={(e) => setIdLevel(e.target.value)}
                                                 name=''
                                                 id=''
+                                                value={idLevel}
                                                 className='w-full cursor-pointer appearance-none rounded-[10px]   bg-[#EDF3F3] py-1 font-monsterrat outline-none'>
                                                 {dataLevel.map((item) => (
                                                     <option key={item.id_level} value={item.id_level}>
